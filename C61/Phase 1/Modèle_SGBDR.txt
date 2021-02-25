@@ -1,0 +1,56 @@
+https://dbdiagram.io/d/6035196cfcdcb6230b211def
+
+
+Structuère du modèle des données sauvegardé
+
+
+
+Table usager as U {
+  id int [pk, increment] // auto-increment
+  prenom varchar
+  nom varchar
+  courriel varchar
+  created_at timestamp
+  password varchar // hash
+}
+
+
+Table evenement  {
+  id int [pk, increment] // auto-increment
+  nom varchar
+  descr varchar
+  owner int
+  lenght numeric
+  start_date timestamp
+  end_date timestamp
+  start_time numeric // 0000 à 2400
+  end_time numeric // 0000 à 2400
+  date_limite timestamp
+}
+
+
+
+Table dispo  {
+  id int [pk, increment] // auto-increment
+  date timestamp // NOT NULL
+  heure numeric // 0000 à 2400
+  event int 
+  user int
+  preference bool
+}
+
+Table horaire  {
+  id int [pk, increment] // auto-increment
+  event int
+  user int
+  start int
+  end int 
+}
+
+Ref: evenement.owner > usager.id
+
+Ref: dispo.user > usager.id
+Ref: horaire.user > usager.id
+
+Ref: horaire.event > evenement.id
+Ref: dispo.event > evenement.id
