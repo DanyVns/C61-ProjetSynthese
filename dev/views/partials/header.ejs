@@ -8,10 +8,34 @@
 
   <body>
 
-
+    <div class="navbar navbar-default navbar-static-top" role="navigation">
+    
+      <div class="container">
+    
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Audience</a>
+        </div>
+    
+        <ul class="nav navbar-nav navbar-right">
+          <% if (currentUser) { %>
+            <li>
+              <a href="/">
+                Bonjour, <%= currentUser.name() %>
+              </a>
+            </li>
+            <li><a href="/logout">Se déconnecter</a></li>
+          <% } else { %>
+            <li><a href="/login">Se connecter</a></li>
+            <li><a href="/signup">S'enregistrer</a></li>
+          <% } %>
+        </ul>
+    
+      </div>
+    
+    </div>
     
     <div class="container">
-    
+    <%# Pour afficher les erreurs %> 
       <% errors.forEach(function(error) { %>
         <div class="alert alert-danger" role="alert">
           <%= error %>

@@ -1,30 +1,50 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var bodyParser = require("body-parser");
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var mongoose = require("mongoose");
-var flash = require("connect-flash");
-var passport = require("passport");
-var setUpPassport = require("./setuppassport");
+var createError = require('http-errors'); // pour la gestion des erreur 
+var express = require('express'); // Express
+var path = require('path'); // Pour naviguer dans les dossiers
+var bodyParser = require("body-parser"); // pour parse les adresse URL reçue
+var cookieParser = require('cookie-parser'); // gestion des cookies
+var logger = require('morgan'); // pour afficher des logs dans la console
+var mongoose = require("mongoose"); // pour connection à une DB
+var flash = require("connect-flash"); // pour place des messages dans les variables de session
+var passport = require("passport"); // pour la gestion d'authentification en stockant
+var setUpPassport = require("./setuppassport"); // nécessaire pour utiliser passport
+var session = require("express-session"); // pour utiliser les variables de sessions
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+mongoose.connect("mongodb://localhost:27017/testAudience", { useNewUrlParser: true, useUnifiedTopology: true} )
+mongoose.set('useCreateIndex', true); // 3 paramètres pour enlever les warning
+setUpPassport();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  secret: "lesecretestdanslasauce",
+  resave: true,
+  saveUninitialized: true
+}));
 
+app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/flash', function(req, res){
+  // Set a flash message by passing the key, followed by the value, to req.flash().
+  req.flash('info', 'Flash is back!')
+  res.redirect('/');
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

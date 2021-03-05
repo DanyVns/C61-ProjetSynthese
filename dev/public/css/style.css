@@ -1,0 +1,57 @@
+* {
+    margin: 0;
+    padding: 0;
+    color: #ffc93c
+}
+
+body {
+    background-color: #155263;
+}
+
+a {
+    color: #ffc93c
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #ff9a3c;
+    opacity: 1; /* Firefox */
+  }
+
+.formulaire {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    display: block;
+    text-align: center;
+}
+
+
+
+.btn-signup {
+    display: block;
+    width: 55%;
+    margin: 0 auto 10px;
+    padding: .225rem 0.5rem;
+    font-size: 1.2rem;
+    border-radius: .3rem;
+    color: #ff9a3c;
+    outline-color: #ff9a3c;
+    background-color: #025955;
+    border-color: #ff9a3c;
+    font-weight: 800;
+}
+
+.input-signup {
+    position: relative;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+    color: #ffc93c;
+    background-color: #025955;
+    margin-bottom: 5px;
+    border: 3px solid #ff9a3c;
+    border-radius: 20px;
+    outline-style: inherit;
+    outline-color: #ff9a3c;
+    text-align: center;
+    }
