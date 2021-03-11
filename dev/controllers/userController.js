@@ -3,22 +3,20 @@ var User = require('../models/user');
 var passport = require("passport");
 
 
+//Afficher le formulaire de signup
+exports.user_create_get = (req, res, next) => {
+  res.render('signup', { title: 'Audience' });
+};
 
+// Gestion du formulaire d'enregistrement
+exports.user_create_post = (req, res, next) => {
 
-exports.user_create_post = 
-    
-    
-    (req, res, next) => {
-
-    var firstname = req.body.firstName;
-    var lastname = req.body.lastName;
+    var firstname = req.body.firstname;
+    var lastname = req.body.lastname;
     var password = req.body.password;
     var email = req.body.username;  
 
 
-
-
-  
     User.findOne({ email: email }, function(err, user) {
   
       if (err) { return next(err); }
@@ -37,4 +35,3 @@ exports.user_create_post =
   
     });
   };
-  

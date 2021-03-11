@@ -1,10 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var passport = require("passport");
-var User = require('../models/user');
+
+
 
 // Les pages controller
 var user_controller = require('../controllers/userController');
+var event_controller = require('../controllers/eventController');
+var schedule_controller = require('../controllers/scheduleController');
+var dispo_controller = require('../controllers/dispoController');
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -45,9 +49,7 @@ router.get("/logout", function(req, res) {
 });
 
 /* Route signup. */
-router.get('/signup', function(req, res) {
-  res.render('signup', { title: 'Audience' });
-});
+router.get('/signup', user_controller.user_create_get); 
 
 router.post('/signup', user_controller.user_create_post, 
 passport.authenticate("login", {
@@ -59,9 +61,9 @@ passport.authenticate("login", {
 
 
 
-router.get('/index', ensureAuthenticated, function(req, res, next) {
-  res.render('index', { title: 'Audience' });
-});
+router.get('/index', ensureAuthenticated, event_controller.index); 
+
+router.get('/index', ensureAuthenticated, event_controller.index); 
 
 
 
