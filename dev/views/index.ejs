@@ -1,7 +1,35 @@
 <%- include ./partials/header.ejs %>
+<% function msToHMS( duration ) {
 
+    var millisecondes = parseInt((duration % 1000) / 100),
+       secondes = parseInt((duration / 1000) % 60),
+       minutes = parseInt((duration / (1000 * 60)) % 60),
+       heures = parseInt((duration / (1000 * 60 * 60)) % 24);
 
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+     heures = (heures < 10) ? "0" + heures : heures;
+     minutes = (minutes < 10) ? "0" + minutes : minutes;
+     secondes = (secondes < 10) ? "0" + secondes : secondes;
+
+     return heures + ":" + minutes + ":" + secondes ;
+}
+
+%> 
+  
+    <% if (Date.now() - currentUser.createdAt < 1000) { %>
+        <h1>Bienvenue nouvel usager</h1>     
+    <% } else { %>
+        <h1>Login réussi! Âge de votre compte : <%=  msToHMS(Date.now() - currentUser.createdAt) %> </h1>     
+    <% } %>
+    
+
+    <button type="button" class="btn">Basic</button>
+<button type="button" class="btn btn-default">Default</button>
+<button type="button" class="btn btn-primary">Primary</button>
+<button type="button" class="btn btn-success">Success</button>
+<button type="button" class="btn btn-info">Info</button>
+<button type="button" class="btn btn-warning">Warning</button>
+<button type="button" class="btn btn-danger">Danger</button>
+<button type="button" class="btn btn-link">Link</button>
+
 
 <%- include ./partials/footer.ejs %>

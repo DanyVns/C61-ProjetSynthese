@@ -15,8 +15,8 @@ module.exports = function() {
     });
   });
 
-  passport.use("login", new LocalStrategy(function(courriel, password, done) {
-    User.findOne({ courriel: courriel }, function(err, user) {
+  passport.use("login", new LocalStrategy(function(email, password, done) {    
+    User.findOne({ email: email }, function(err, user) {
       if (err) { return done(err); }
       if (!user) {
         return done(null, false, { message: "Aucun usager avec ce courriel" });

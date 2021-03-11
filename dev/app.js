@@ -11,7 +11,7 @@ var setUpPassport = require("./setuppassport"); // nécessaire pour utiliser pas
 var session = require("express-session"); // pour utiliser les variables de sessions
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+
 
 var app = express();
 mongoose.connect("mongodb://localhost:27017/testAudience", { useNewUrlParser: true, useUnifiedTopology: true} )
@@ -40,14 +40,8 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/flash', function(req, res){
-  // Set a flash message by passing the key, followed by the value, to req.flash().
-  req.flash('info', 'Flash is back!')
-  res.redirect('/');
-});
-
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
