@@ -14,6 +14,10 @@ var UserSchema = mongoose.Schema({
   lastname: String
 });
 
+
+// Référence pour méthode d'authentification avec passport et de hashing de password : 
+// 2016 'Express in Action' Evan M. Hahn. Chapitre 8  
+
 var noop = function() {};
 
 UserSchema.pre("save", function(done) {

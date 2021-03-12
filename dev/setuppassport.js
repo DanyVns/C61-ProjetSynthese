@@ -5,6 +5,8 @@ var User = require("./models/user");
 
 module.exports = function() {
 
+
+  
   passport.serializeUser(function(user, done) {
     done(null, user._id);
   });
@@ -15,6 +17,9 @@ module.exports = function() {
     });
   });
 
+
+  // http://www.passportjs.org/docs/username-password/
+  // Username doit être utilisé dans un formulaire pour être compatible. 
   passport.use("login", new LocalStrategy(function(email, password, done) {    
     User.findOne({ email: email }, function(err, user) {
       if (err) { return done(err); }
