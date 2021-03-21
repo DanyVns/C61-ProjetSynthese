@@ -16,6 +16,7 @@ var indexRouter = require('./routes/index');
 var app = express();
 mongoose.connect("mongodb://localhost:27017/testAudience", { useNewUrlParser: true, useUnifiedTopology: true} )
 mongoose.set('useCreateIndex', true); // 3 paramètres pour enlever les warning
+mongoose.set('useFindAndModify', false);
 setUpPassport();
 
 // view engine setup

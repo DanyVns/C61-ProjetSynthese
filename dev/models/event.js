@@ -15,6 +15,7 @@ var EventSchema = new Schema(
       start_time: {type: Number, required: true, default: 0800},
       end_time: {type: Number, required: true, default: 1800},
       limit_date: {type: Date, required: true},
+      dispo: [{type: Schema.Types.ObjectId, ref: 'Dispo'}]
     }
 );
 

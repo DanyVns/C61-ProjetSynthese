@@ -25,7 +25,7 @@ router.use(function(req, res, next) {
   res.locals.errors = req.flash("error");
   res.locals.infos = req.flash("info");
   res.locals.currentEvent = null;
-  res.locals.patate;
+
   next();
 });
 
@@ -68,6 +68,11 @@ router.get('/index', ensureAuthenticated, event_controller.index);
 router.get('/create_event', ensureAuthenticated, event_controller.create_event_get); 
 
 router.post('/create_event', ensureAuthenticated, event_controller.create_event_post); 
+
+router.get('/join_event/:id', ensureAuthenticated, event_controller.join_event_get); 
+
+router.post('/join_event/:id', ensureAuthenticated, dispo_controller.join_event_post); 
+
 
 
 

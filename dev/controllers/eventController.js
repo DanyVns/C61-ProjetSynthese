@@ -1,7 +1,9 @@
 
 var Event = require('../models/event');
 var User = require('../models/User');
+var Dispo = require('../models/dispo');
 var async = require('async');
+var mongoose = require("mongoose");
 
 
 exports.index = function(req, res) {
@@ -51,5 +53,31 @@ exports.create_event_post = function(req, res, next) {
     
 
     
+};
 
+exports.join_event_get = function(req, res, next) {   
+    if( !mongoose.Types.ObjectId.isValid(req.params.id) ){
+        req.flash("error", "ID non valide");
+        return res.redirect("/index");
+    } 
+
+    async.parallel({
+        event: function(callback) {
+            Event.findById(req.params.id)
+              .exec(callback)
+        },
+        dispo: function(callback) {
+            Dispo.findOne({event: req.params.id,
+                user: req.user._id}, 'dispos').exec(callback);
+        }
+    }, function(err, results) {
+        if (err) { return next(err); } 
+        if (results.event==null) { 
+            req.flash("error", "Évènement n'existe pas");
+            return res.redirect("/index");
+        }
+       
+        req.session.currentEvent = results.event
+        res.render('join_event', { title: "Audience - joindre évènement", event: results.event, dispo: results.dispo.dispos });
+    });
 };
