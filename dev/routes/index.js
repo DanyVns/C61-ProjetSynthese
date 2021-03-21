@@ -24,6 +24,8 @@ router.use(function(req, res, next) {
   res.locals.currentUser = req.user;
   res.locals.errors = req.flash("error");
   res.locals.infos = req.flash("info");
+  res.locals.currentEvent = null;
+  res.locals.patate;
   next();
 });
 
@@ -63,8 +65,9 @@ passport.authenticate("login", {
 
 router.get('/index', ensureAuthenticated, event_controller.index); 
 
-router.get('/index', ensureAuthenticated, event_controller.index); 
+router.get('/create_event', ensureAuthenticated, event_controller.create_event_get); 
 
+router.post('/create_event', ensureAuthenticated, event_controller.create_event_post); 
 
 
 
