@@ -64,7 +64,8 @@ exports.join_event_get = function(req, res, next) {
     async.parallel({
         event: function(callback) {
             Event.findById(req.params.id)
-              .exec(callback)
+            .populate('owner')
+            .exec(callback)
         },
         dispo: function(callback) {
             Dispo.findOne({event: req.params.id,
