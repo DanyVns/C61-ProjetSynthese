@@ -5,7 +5,13 @@
         var dateCourante=event.start_date; 
         console.log(dateCourante);
         var datefin=event.end_date 
-        var nombreJours=Math.round(Math.abs((datefin - dateCourante) / journee));               
+        var nombreJours=Math.round(Math.abs((datefin - dateCourante) / journee));   
+        if(dispo == null) {
+            dispo = []
+        }       
+        else{
+            dispo = dispo.dispos
+        }    
      %>
     
 
@@ -36,7 +42,7 @@
                         var date = dateCourante.getDate()+1
                         var valeurcheckbox = dateCourante.getFullYear() + moisFormat + date  + heureFormat + "00"
                     %>
-                    <input type="checkbox" id=<%=valeurcheckbox %> name=<%=valeurcheckbox %>  value="checked" <% if (dispo.includes(valeurcheckbox)) { %> checked <% } %>>
+                    <input type="checkbox"  name=<%=valeurcheckbox %>  value="checked" <% if (dispo.includes(valeurcheckbox)) { %> checked <% } %>>
                     <label for=<%=valeurcheckbox %>>
                         <%= heureFormat + ":00" %>
                     </label><br>

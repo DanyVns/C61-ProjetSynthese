@@ -18,10 +18,35 @@
     <% if (Date.now() - currentUser.createdAt < 1000) { %>
         <h1>Bienvenue nouvel usager</h1>     
     <% } else { %>
-        <h1>Login réussi! Âge de votre compte : <%=  msToHMS(Date.now() - currentUser.createdAt) %> </h1>     
+        <h1>Login réussi! Nombre d'usagers : <%=  data.user_count %>  </h1>     
     <% } %>
 
-    <h1>Nombre d'usagers : <%=  data.user_count %> </h1>   
+<h1><%= data.event_count_user[0]._id  %></h1>
+    
+    <% if (data.event_owner.length > 0) { %>
+        <h1>Évènement créés : </h1>        
+    <% } %>
+    <ul>
+        <% data.event_owner.forEach(element => { %>
+         <li>  <a href="/join_event/<%= element._id %>"><%= element.nom + " - " + element.description + " "%></a>  
+            <% data.event_count_user.forEach(count => { %>                
+                <% if (count._id.toString() === element._id.toString()) { %>
+                    == Nombre d'usagers inscrits : <%= count.total %> 
+                <% } %>
+                
+            <% }) %>
+            <button type="button" class="btn btn-danger"> <a href="/generate_schedule/<%= element._id %>">Générer horaire</a></a></button></li>
+        <% }) %>
+    </ul>
+
+    <% if (data.dispo_event.length > 0) { %>
+        <h1>Évènement joints : </h1>        
+    <% } %>
+    <ul>
+        <% data.dispo_event.forEach(element => { %>
+         <li>  <a href="/join_event/<%= element.event._id %>"><%= element.event.nom + " - " + element.event.description %></a></li>
+        <% }) %>
+    </ul>
     
 
 

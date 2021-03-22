@@ -1,21 +1,44 @@
 
 var Event = require('../models/event');
-var User = require('../models/User');
+var User = require('../models/user');
 var Dispo = require('../models/dispo');
 var async = require('async');
 var mongoose = require("mongoose");
 
 
 exports.index = function(req, res) {
-
+    var data = [];
     async.parallel({
         user_count: function(callback) {
             User.countDocuments({}, callback); // test pour compter le nombre d'usager
         },
+        event_owner: function(callback) {
+            Event.find({
+                owner: req.user._id}).exec(callback);
+        },   
+        event_count_user: function(callback) {
+            var agg = [
+                {$group: {
+                  _id: "$event",                
+                  
+                  total: {$sum: 1}
+                }}
+              ];
+              Dispo.aggregate(agg).exec(callback)
+        }   ,
+       
+        dispo_event: function(callback) {
+            Dispo.find({ user: req.user._id}, 'event')          
+                .populate('event')      
+                .exec(callback);
+        }       
         
-    }, function(err, results) {        
+    }, function(err, results) {       
+        console.log(results.event_count_user);   
         res.render('index', { title: 'Audience', error: err, data: results });
+        
     });
+    
 };
 
 exports.create_event_get = function(req, res) {   
@@ -46,10 +69,10 @@ exports.create_event_post = function(req, res, next) {
             limit_date: limit_date
 
       });
-      newEvent.save();    
-
+    newEvent.save();    
+    req.flash("info", "Évènement créé avec l'identifiant : " + newEvent._id);
     res.locals.currentEvent = newEvent;
-    res.render('create_event', { title: 'Audience', newEvent: newEvent });
+    res.redirect("/index");
     
 
     
@@ -79,6 +102,6 @@ exports.join_event_get = function(req, res, next) {
         }
        
         req.session.currentEvent = results.event
-        res.render('join_event', { title: "Audience - joindre évènement", event: results.event, dispo: results.dispo.dispos });
+        res.render('join_event', { title: "Audience - joindre évènement", event: results.event, dispo: results.dispo });
     });
 };
