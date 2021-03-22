@@ -73,7 +73,7 @@ router.get('/join_event/:id', ensureAuthenticated, event_controller.join_event_g
 
 router.post('/join_event/:id', ensureAuthenticated, dispo_controller.join_event_post); 
 
-
+router.get('/generate_schedule/:id', ensureAuthenticated, schedule_controller.create); 
 
 
 module.exports = router;
