@@ -6,8 +6,30 @@ var mongoose = require("mongoose");
 
 
 
-exports.create = function(req, res, next) {             
+exports.create = function(req, res, next) {       
+    
+    if( !mongoose.Types.ObjectId.isValid(req.params.id) ){
+        req.flash("error", "ID non valide");
+        return res.redirect("/index");
+    } 
 
-        res.render('create_schedule', { title: "Audience - à venir" });
+    async.parallel({
+        event: function(callback) {
+            Event.findById(req.params.id)
+            .populate('owner')
+            .exec(callback)
+        },
+  
+    }, function(err, results) {
+        if (err) { return next(err); } 
+        if (results.event==null) { 
+            req.flash("error", "Évènement n'existe pas");
+            return res.redirect("/index");
+        }
 
-};
+        results.event.owner.password = "N/A"
+       
+        req.session.currentEvent = results.event        
+        res.render('create_schedule', { title: "Test", event : req.session.currentEvent });
+    }
+    )};

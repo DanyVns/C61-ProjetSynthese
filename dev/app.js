@@ -11,6 +11,7 @@ var setUpPassport = require("./setuppassport"); // nécessaire pour utiliser pas
 var session = require("express-session"); // pour utiliser les variables de sessions
 
 var indexRouter = require('./routes/index');
+var apiRouter = require('./routes/api');
 
 
 var app = express();
@@ -29,6 +30,10 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+  })); 
 
 app.use(session({
   secret: "lesecretestdanslasauce",
@@ -42,6 +47,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', indexRouter);
+app.use('/api', apiRouter);
 
 
 // catch 404 and forward to error handler

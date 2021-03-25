@@ -2,9 +2,8 @@
 
     <% 
         const journee=24 * 60 * 60 * 1000; 
-        var dateCourante=event.start_date; 
-        console.log(dateCourante);
-        var datefin=event.end_date 
+        var dateCourante=event.start_date;        
+        var datefin=event.end_date;
         var nombreJours=Math.round(Math.abs((datefin - dateCourante) / journee));   
         if(dispo == null) {
             dispo = []
@@ -16,7 +15,7 @@
     
 
         <h1>Joindre évènement </h1>
-        <h2>Propriétaire: <%= event.owner.firstname + " " + event.owner.lastname %></h2>
+        <h2>Propriétaire: <%= event.owner.name %></h2>
         <h2>Titre : "<%= event.nom %>"</h2>
         
         <h2> Description : <%= event.description  %> </h2>      

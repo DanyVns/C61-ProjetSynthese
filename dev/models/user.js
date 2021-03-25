@@ -43,6 +43,12 @@ UserSchema.methods.checkPassword = function(guess, done) {
   });
 };
 
+// Valeur virtuel pour le nom complet
+UserSchema
+.virtual('name')
+.get(function () {
+  return this.firstname + ' ' + this.lastname;
+});
 
 
 var User = mongoose.model("User", UserSchema);
