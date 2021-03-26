@@ -41,8 +41,7 @@ router.post('/test', (req, res) => {
             return res.redirect("/index");
         }
         results.event.owner.password = "N/A"
-        console.log('ici');
-        console.log(results);
+
         res.send(results);
 
 

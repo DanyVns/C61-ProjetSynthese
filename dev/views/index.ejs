@@ -42,12 +42,15 @@
     <% if (data.dispo_event.length > 0) { %>
         <h1>Évènement joints : </h1>        
     <% } %>
-    <ul>
-        <% data.dispo_event.forEach(element => { %>
-         <li>  <a href="/join_event/<%= element.event._id %>"><%= element.event.nom + " - " + element.event.description %></a></li>
-        <% }) %>
-    </ul>
-    
+    <% if (data.dispo_event.length > 0) { %>
+     
+        <ul>
+            <% data.dispo_event.forEach(element => { %>
+                <li>  <a href="/join_event/<%= element.event._id %>"><%= element.event.nom + " - " + element.event.description %></a></li>
+                <% }) %>
+            </ul>
+            <% } %>
+            
 
 
 <button type="button" class="btn btn-danger"> <a href="/create_event">Créer un évènement</a></a></button>
