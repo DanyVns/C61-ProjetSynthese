@@ -1,3 +1,11 @@
+:root {
+  --navy: #112F41;
+  --teal: #155263;
+  --teal-light: #4FB99F;
+  --jaune: #F2B134;
+  --orange: #ff9a3c;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,17 +13,36 @@
 }
 
 body {
-    background-color: #155263;
+    background-color: var(--navy);
 }
 
 a {
-    color: #ffc93c
+    color: white;
+}
+
+input{
+  background-color: var(--teal);
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #ff9a3c;
+    color: var(--orange);
     opacity: 1; /* Firefox */
   }
+
+  .navbar-default {
+    background-color: var(--teal);
+    border-color: var(--teal-light);
+
+}
+
+.navbar-default .navbar-brand {
+  color: var(--jaune);
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: var(--jaune);
+}
+
 
 .formulaire {
     width: 100%;
@@ -34,10 +61,10 @@ a {
     padding: .225rem 0.5rem;
     font-size: 1.2rem;
     border-radius: .3rem;
-    color: #ff9a3c;
-    outline-color: #ff9a3c;
-    background-color: #025955;
-    border-color: #ff9a3c;
+    color: var(--orange);
+    outline-color: var(--orange);
+    background-color: var(--navy);
+    border-color: var(--orange);
     font-weight: 800;
 }
 
@@ -46,13 +73,13 @@ a {
     height: auto;
     padding: 10px;
     font-size: 16px;
-    color: #ffc93c;
-    background-color: #025955;
+    color: var(--jaune);
+    background-color: var(--navy);
     margin-bottom: 5px;
-    border: 3px solid #ff9a3c;
+    border: 3px solid var(--orange);
     border-radius: 20px;
     outline-style: inherit;
-    outline-color: #ff9a3c;
+    outline-color: var(--orange);
     text-align: center;
     }
 
