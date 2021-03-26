@@ -15,7 +15,8 @@ var apiRouter = require('./routes/api');
 
 
 var app = express();
-mongoose.connect("mongodb://localhost:27017/testAudience", { useNewUrlParser: true, useUnifiedTopology: true} )
+//mongoose.connect("mongodb://localhost:27017/testAudience", { useNewUrlParser: true, useUnifiedTopology: true} )
+mongoose.connect("mongodb+srv://dbUser:AAAaaa111@cluster0.dcfkf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true} )
 mongoose.set('useCreateIndex', true); // 3 paramètres pour enlever les warning
 mongoose.set('useFindAndModify', false);
 setUpPassport();

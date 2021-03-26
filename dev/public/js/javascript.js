@@ -21,7 +21,8 @@ function ajaxPost(){
     	
   // PREPARE FORM DATA
   var formData = {
-    event : "6057a483396dbc1eb0f020d6"  
+    //event : "6057a483396dbc1eb0f020d6"  
+    event : "605d2cd510260a47fc52a317"  
   }
   
   // DO POST
@@ -37,7 +38,6 @@ function ajaxPost(){
     scheduleOpt.init()
     },
   error : function(e) {
-    alert("Error!")
     console.log("ERROR: ", e);
   }
 });  

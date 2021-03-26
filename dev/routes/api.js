@@ -33,12 +33,16 @@ router.post('/test', (req, res) => {
                 .exec(callback);
         }
     }, function (err, results) {
-        if (err) { return next(err); }
+        if (err) { 
+            console.log(err);
+            return next(err); }
         if (results.event == null) {
             req.flash("error", "Évènement n'existe pas");
             return res.redirect("/index");
         }
         results.event.owner.password = "N/A"
+        console.log('ici');
+        console.log(results);
         res.send(results);
 
 
