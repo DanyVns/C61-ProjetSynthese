@@ -48,7 +48,7 @@ class ScheduleOptimizer {
         })
 
         var fitnessParam = [this.dispo, this.users, this.timeslots]
-        
+        console.log(this.timeslots.length + "nombre de slots");
 
         this.AlgoGen = new AlgoGen(this.timeslots, userNb, this.fitness, fitnessParam)
 
