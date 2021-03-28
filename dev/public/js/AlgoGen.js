@@ -1,6 +1,6 @@
 class AlgoGen {
     constructor(nbGene, etendueGene, taillePop, ratioMutation, nbElite,
-        selection, crossover, mutation, fitnessFct, fitnessParam) {
+        selection, crossover, mutation, fitnessFct, fitnessParam, solutionFct) {
         this.fitness = fitnessFct;
         this.fitnessParam = fitnessParam;
         this.nbGene = nbGene;
@@ -10,16 +10,76 @@ class AlgoGen {
         this.nbElite = nbElite;
         this.selection = new SelectionStrategy(selection)
         this.crossover = new CrossoverStrategy(crossover)
+        this.crossover.distonnom()
         this.mutation = new MutationStrategy(mutation)
+        this.currentGen = []
+        this.solutionGenerator = solutionFct
 
 
         //var solution = [1,-1,-1,0,-1,-1,-1,-1,-1,-1, -1,-1,-1,-1,-1]
         var solution = [2, -1, 3, 1, 0]
         //this.fitness(this.fitnessParam, solution);
 
+    }
+
+    init() {
+
+        this.currentGen = []
+
+        for (let i = 0; i < this.population; i++) {
+            var individu = {
+                solution: this.solutionGenerator(this.nbGene, this.etendueGene),
+                fitness: 0
+            }
+
+            individu.fitness = this.fitness(this.fitnessParam, individu.solution)
+            this.currentGen.push(individu)
+        }
+        sortPop(this.currentGen);
+
+
 
     }
+
+    nextGen() {
+        var newGen = [];
+
+        // TODO à mettre dans une fonction?
+        // Selon le fitness, copier les meilleurs X parents dans la prochaine generation
+	    for (let i = 0; i < this.nbElite; ++i) {
+            newGen[i] = this.currentGen[i];
+	    }
+
+        for (let i = this.nbElite; i < this.population; i++) {
+     
+            
+            //selection
+            var parent1 = this.selection.select(this.currentGen)
+            var parent2 = this.selection.select(this.currentGen)        
+            //Croisement
+            var enfant = this.crossover.crossover(parent1.solution, parent2.solution)
+            enfant.fitness = this.fitness(this.fitnessParam, enfant.solution)
+            newGen.push(enfant)
+        }
+        sortPop(newGen);
+        this.currentGen = newGen
+        //console.log(this.currentGen);
+
+
+
+
+
+
+    }
+
 }
+
+function sortPop(population) {
+    population.sort((a, b) => (a.fitness < b.fitness) ? 1 : -1)
+}
+
+
+
 
 
 /********************SELECTION****************** */
@@ -38,9 +98,9 @@ class SelectionStrategy {
         this.strategy.distonnom()
     }
 
-    
-    select(solution) {
-        return this.strategy.select(solution)
+
+    select(population) {
+        return this.strategy.select(population)
     }
 }
 
@@ -53,7 +113,7 @@ class RouletteSelectionStrategy extends SelectionStrategy {
         console.log(this.name);
     }
 
-    
+
     select(solution) {
         return 1
     }
@@ -68,8 +128,20 @@ class TournamentSelectionStrategy extends SelectionStrategy {
         console.log(this.name);
     }
 
-    select(solution) {
-        return 1
+    select(population) {
+
+        var tailleTournoi = 12;
+        var parent = -1;
+        var meilleurescore = -999;
+        for (var i = 0; i < tailleTournoi; i++) {
+            var random = Math.floor(population.length * Math.random());
+            if (population[random].fitness > meilleurescore) {
+                meilleurescore = population[random].fitness;
+                parent = population[random];
+            }
+        }
+        return parent;
+
     }
 }
 
@@ -81,20 +153,17 @@ class CrossoverStrategy {
     constructor(strategy) {
         this.name = "parent"
         this.strategy = null;
-    }
-
-    setStrategy(strategy) {
         if (strategy == "onepoint")
             this.strategy = new OnePointCrossoverStrategy()
-        else if (strategy == "scrambler")
-            this.strategy = new ScramblerCrossoverStrategy()
+        else if (strategy == "moyenneponderee")
+            this.strategy = new MoyennePondereeCrossoverStrategy()
     }
     distonnom() {
         this.strategy.distonnom()
     }
 
-    crossover(solution) {
-        return this.strategy.crossover(solution)
+    crossover(solution1, solution2) {
+        return this.strategy.crossover(solution1, solution2)
     }
 }
 
@@ -107,9 +176,39 @@ class OnePointCrossoverStrategy extends CrossoverStrategy {
         console.log(this.name);
     }
 
-    crossover(solution) {
-        // code
-        return 1
+    crossover(solution1, solution2) {
+        var enfant = {
+            solution: [],
+            fitness: 0
+        }
+
+       
+
+        var i = Math.floor(solution1.length * Math.random());
+        var j = Math.floor(solution2.length * Math.random());
+        var premier = Math.min(i, j);
+        var second = Math.max(i, j);
+
+        for (var i = premier; i <= second; i++) {
+            enfant.solution[i] = solution1[i];
+        }
+
+        var index = 0;
+        for (var i = 0; i < solution1.length; i++) {
+            if (i >= premier && i <= second) {
+                continue;
+            }
+            
+            // ne pas inclure les chiffres déjà existant
+            // si solution contient déjà le chiffre : avancer dans l'index
+            while (enfant.solution.includes(solution2[index])) {
+                index++;
+            }
+            enfant.solution[i] = solution2[index];
+            index++;
+        }
+        
+        return enfant;
     }
 }
 
@@ -122,7 +221,7 @@ class MoyennePondereeCrossoverStrategy extends CrossoverStrategy {
         console.log(this.name);
     }
 
-    crossover(solution) {
+    crossover(solution1, solution2) {
         // code
         return 1
     }
@@ -137,9 +236,7 @@ class MutationStrategy {
     constructor(strategy) {
         this.name = "parent"
         this.strategy = null;
-    }
 
-    setStrategy(strategy) {
         if (strategy == "random")
             this.strategy = new RandomMutationStrategy()
         else if (strategy == "scrambler")
