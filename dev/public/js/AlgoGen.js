@@ -66,10 +66,10 @@ class AlgoGen {
         //console.log(this.currentGen);
 
 
+    }
 
-
-
-
+    getBest(){
+        return this.currentGen[0];
     }
 
 }
