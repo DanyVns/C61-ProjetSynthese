@@ -49,8 +49,18 @@ class ScheduleOptimizer {
 
         var fitnessParam = [this.dispo, this.users, this.timeslots]
         console.log(this.timeslots.length + "nombre de slots");
+        var nbGene = this.timeslots.length
+        var etendueGene = [0, userNb]
+        var nbElite = 10
+        var ratioMutation = 10
+        var taillePop = 100
+        var selection = "tournament"
+        var crossover = "onepoint"
+        var mutation = "scrambler"
 
-        this.AlgoGen = new AlgoGen(this.timeslots, userNb, this.fitness, fitnessParam)
+        this.AlgoGen = new AlgoGen(nbGene, etendueGene, taillePop,
+                                   ratioMutation, nbElite, selection, crossover, mutation,
+                                    this.fitness, fitnessParam)
 
         
     }
