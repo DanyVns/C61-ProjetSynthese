@@ -55,7 +55,7 @@ class ScheduleOptimizer {
         var etendueGene = [0, userNb]
         var nbElite = 10
         var ratioMutation = 10
-        var taillePop = 100
+        var taillePop = 500
         var selection = "tournament"
         var crossover = "onepoint"
         var mutation = "scrambler"
@@ -67,25 +67,27 @@ class ScheduleOptimizer {
         var t1 = new Date()
         this.AlgoGen.init();
         var i = 0
-        while (i < 50) {
+        while (i < 250) {
             this.AlgoGen.nextGen();
-            i++;
-            //console.log("gen" + i);
+            i++;            
         }
+        console.log("gen" + i);
         var t2 = new Date()
         var dif = (t2 - t1) / 1000
 
-        var solution = this.AlgoGen.getBest()
+        var solution = this.AlgoGen.getCurrentGen()[0]
 
-        console.log(dif);
-        console.log(solution);
-        console.log(this.timeslots);
-        var countries = ['United States', 'Canada', 'Argentina', 'Armenia'];
+        console.log(this.AlgoGen.getCurrentGen());
+
+        console.log("Temps en secondes : " + dif);
+
+        
         var timeslots = this.timeslots
         var liste = $('#listesolution')
         liste.empty();
-        console.log(this.userDict);
-        console.log();
+
+        console.log(timeslots[0].slice(6,8));
+
         var users = this.userDict
         $.each(timeslots, function (i) {
             var li = $('<li/>')
@@ -108,21 +110,30 @@ class ScheduleOptimizer {
         //console.log(dispo[solution[0]].dispos.indexOf(timeslots[0]));
         var score = 0
 
-        let erreur = false
+        
+        let lastuser = false
+        var currentday, lastday;
+
         for (let index = 0; index < solution.length; index++) {
-            if (solution[index] == -1) {
+            if (solution[index] == -1) {                
+                lastuser = false
                 continue
             }
-            else if (dispo[solution[index]].dispos.indexOf(timeslots[index]) > -1) {
-                score += 1
-                //console.log("solution bonne!");
-                //console.log(dispo[solution[index]].dispos);
-                //console.log("conteint : ");
-                //console.log(timeslots[index]);
+            else if (dispo[solution[index]].dispos.indexOf(timeslots[index]) > -1) {                
+                score += 15
             }
-            else {
-                erreur = true;
-                score -= timeslots.length
+            else {                
+                score -= timeslots.length*2            
+            }
+
+            lastuser = true       
+            lastday = currentday
+            currentday = timeslots[0].slice(6,8)
+            
+            if(lastuser && lastday == currentday){
+                // donnne un meilleur score si les usagers sont collées
+                score += 5
+                lastuser = false
             }
 
 

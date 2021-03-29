@@ -21,8 +21,8 @@ function ajaxPost(){
     	
   // PREPARE FORM DATA
   var formData = {
-    //event : "6057a483396dbc1eb0f020d6"  
-    event : "605d4347d003c55de4cead60"  
+    event : "6057a483396dbc1eb0f020d6"  
+    //event : "605d4347d003c55de4cead60"  
   }
   
   // DO POST

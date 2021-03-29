@@ -9,15 +9,14 @@ class AlgoGen {
         this.ratioMutation = ratioMutation
         this.nbElite = nbElite;
         this.selection = new SelectionStrategy(selection)
-        this.crossover = new CrossoverStrategy(crossover)
-        this.crossover.distonnom()
+        this.crossover = new CrossoverStrategy(crossover)        
         this.mutation = new MutationStrategy(mutation)
         this.currentGen = []
         this.solutionGenerator = solutionFct
 
 
         //var solution = [1,-1,-1,0,-1,-1,-1,-1,-1,-1, -1,-1,-1,-1,-1]
-        var solution = [2, -1, 3, 1, 0]
+        //var solution = [2, -1, 3, 1, 0]
         //this.fitness(this.fitnessParam, solution);
 
     }
@@ -49,15 +48,20 @@ class AlgoGen {
 	    for (let i = 0; i < this.nbElite; ++i) {
             newGen[i] = this.currentGen[i];
 	    }
-
+        
         for (let i = this.nbElite; i < this.population; i++) {
      
             
             //selection
             var parent1 = this.selection.select(this.currentGen)
-            var parent2 = this.selection.select(this.currentGen)        
+            
+            var parent2 = this.selection.select(this.currentGen)     
+            
+            
+
             //Croisement
             var enfant = this.crossover.crossover(parent1.solution, parent2.solution)
+            
             enfant.fitness = this.fitness(this.fitnessParam, enfant.solution)
             newGen.push(enfant)
         }
@@ -68,9 +72,10 @@ class AlgoGen {
 
     }
 
-    getBest(){
-        return this.currentGen[0];
+    getCurrentGen(){
+        return this.currentGen;
     }
+    
 
 }
 
@@ -201,16 +206,21 @@ class OnePointCrossoverStrategy extends CrossoverStrategy {
             
             // ne pas inclure les chiffres déjà existant
             // si solution contient déjà le chiffre : avancer dans l'index
-            while (enfant.solution.includes(solution2[index])) {
-                index++;
-            }
+            while (enfant.solution.includes(solution2[index]) && solution2[index] != -1) {
+                 index++;                 
+             }
+      
             enfant.solution[i] = solution2[index];
             index++;
         }
         
         return enfant;
     }
+
+
 }
+
+
 
 class MoyennePondereeCrossoverStrategy extends CrossoverStrategy {
     constructor() {
