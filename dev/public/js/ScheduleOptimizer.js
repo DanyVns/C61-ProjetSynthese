@@ -97,10 +97,9 @@ class ScheduleOptimizer {
         var users = this.userDict
         $.each(timeslots, function (i) {
             var li = $('<li/>')
-                .addClass('ui-menu-item')
-                .attr('role', 'menuitem')
+                .addClass('list-group-item ')
                 .appendTo(liste);
-            var aaa = $('<a/>')
+            var aaa = $('<span/>')
                 .addClass('ui-all')
                 .text(timeslots[i] + " -- " + (typeof users[solution.solution[i]] !== "undefined" ? users[solution.solution[i]] : '**LIBRE**'))
                 .appendTo(li);
