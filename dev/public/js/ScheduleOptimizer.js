@@ -33,7 +33,7 @@ class ScheduleOptimizer {
             dateCourante.setDate(dateCourante.getDate() + 1)
         }
 
-        console.log(this.timeslots);
+        //console.log(this.timeslots);
 
 
         // Donner un nombre pour chaque utilisateur
@@ -42,7 +42,7 @@ class ScheduleOptimizer {
             this.users[Object.keys(this.users).length] = element._id
         });
         var userNb = Object.keys(this.users).length
-
+        console.log("nombre users" + userNb);
 
         this.dispo.forEach(element => {
             if (element.user._id == "604b7273987f7c840c1da410")
@@ -55,7 +55,7 @@ class ScheduleOptimizer {
         var etendueGene = [0, userNb];
         var nbElite = 10;
         var ratioMutation = 0.10;
-        var taillePop = 500;
+        var taillePop = 250;
         var selection = "tournament";
         var crossover = "onepoint";
         var mutation = "swap";
@@ -65,7 +65,7 @@ class ScheduleOptimizer {
             this.fitness, fitnessParam, this.solutionGenerator)
 
         this.AlgoGen.init();
-
+        
     }
 
     start() {
@@ -73,18 +73,30 @@ class ScheduleOptimizer {
 
         var t1 = new Date()
         var i = 0
-        while (i < 400) {
+
+        this.AlgoGen.nextGen();
+        
+        while (i < 100) {
             this.AlgoGen.nextGen();
             i++;
         }
-        //console.log("gen" + i);
-        var t2 = new Date()
-        var dif = (t2 - t1) / 1000
-
-        var solution = this.AlgoGen.getCurrentGen()[0]
-
-        //console.log(this.AlgoGen.getCurrentGen());
-
+        const genMax = 2000
+        var genCurrent = 0
+        // while(this.AlgoGen.getCurrentGen()[0].fitness < 0 && genCurrent <= genMax ) {
+            //     this.AlgoGen.nextGen();
+            //     genCurrent++;
+            //     console.log(genCurrent);
+            // }
+            
+            //console.log("gen" + i);
+            var t2 = new Date()
+            var dif = (t2 - t1) / 1000
+            
+            var solution = this.AlgoGen.getCurrentGen()[0]
+            
+            console.log(this.AlgoGen.getCurrentGen());
+            
+            
         console.log("Temps en secondes : " + dif);
 
 
@@ -111,6 +123,8 @@ class ScheduleOptimizer {
         var users = fitnessParam[1]
         var timeslots = fitnessParam[2]
 
+        
+        // modifier fitness pour réduire le score si tout les usagers ne sont pas représenté
 
         //console.log(dispo[solution[0]].dispos.indexOf(timeslots[0]));
         var score = 0
@@ -119,16 +133,20 @@ class ScheduleOptimizer {
         let lastuser = false
         var currentday, lastday;
 
+        var nbUsager = 0
+
         for (let index = 0; index < solution.length; index++) {
-            if (solution[index] == -1) {
+            if (solution[index] <= -1) {
                 lastuser = false
                 continue
             }
             else if (dispo[solution[index]].dispos.indexOf(timeslots[index]) > -1) {
                 score += 15
+                nbUsager++
             }
             else {
                 score -= timeslots.length * 2
+                nbUsager++
             }
 
             lastuser = true
@@ -140,10 +158,13 @@ class ScheduleOptimizer {
                 score += 5
                 lastuser = false
             }
-        
+            
+    
 
+        }
 
-
+        if(nbUsager != users.length){
+            score -= users.length * 20
         }
 
         if (score > 0) {
@@ -174,6 +195,7 @@ function remplirTableau(valeur, longueur) {
     var tableau = [];
     for (var i = 0; i < longueur; i++) {
         tableau.push(valeur);
+        valeur-=1
     }
     return tableau;
 }
