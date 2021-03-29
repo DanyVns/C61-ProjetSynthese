@@ -11,17 +11,17 @@ $("#joineventform").submit(function( event ) {
 
 $( "#test" ).click(function() {
     $( "h1" ).css("color", "red" );
-    event.preventDefault();    
-    ajaxPost();
+    event.preventDefault();        
+    ajaxPost(this.getAttribute("eventid"));
   });
 
 });
 
-function ajaxPost(){
+function ajaxPost(eventID){
     	
   // PREPARE FORM DATA
   var formData = {
-    event : "6057a483396dbc1eb0f020d6"  
+    event : eventID  
     //event : "605d4347d003c55de4cead60"  
   }
   
@@ -35,7 +35,8 @@ function ajaxPost(){
   success : function(data) {
     console.log(data);
     scheduleOpt = new ScheduleOptimizer(data);
-    scheduleOpt.init()
+    scheduleOpt.init();
+    scheduleOpt.start();
     },
   error : function(e) {
     console.log("ERROR: ", e);

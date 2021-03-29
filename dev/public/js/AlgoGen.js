@@ -61,6 +61,10 @@ class AlgoGen {
 
             //Croisement
             var enfant = this.crossover.crossover(parent1.solution, parent2.solution)
+
+            if (Math.random() < this.ratioMutation) { // 10% de chance
+                enfant.solution = this.mutation.mutate(enfant.solution)
+            }
             
             enfant.fitness = this.fitness(this.fitnessParam, enfant.solution)
             newGen.push(enfant)
@@ -247,8 +251,8 @@ class MutationStrategy {
         this.name = "parent"
         this.strategy = null;
 
-        if (strategy == "random")
-            this.strategy = new RandomMutationStrategy()
+        if (strategy == "swap")
+            this.strategy = new SwapMutationStrategy()
         else if (strategy == "scrambler")
             this.strategy = new ScramblerMutationStrategy()
     }
@@ -256,22 +260,30 @@ class MutationStrategy {
         this.strategy.distonnom()
     }
 
-    mutate() {
+    mutate(solution) {
         return this.strategy.mutate(solution)
     }
 }
 
-class RandomMutationStrategy extends MutationStrategy {
+class SwapMutationStrategy extends MutationStrategy {
     constructor() {
         super()
-        this.name = "random"
+        this.name = "swap"
     }
     distonnom() {
         console.log(this.name);
     }
 
     mutate(solution) {
-        return 1
+        var i = Math.floor(solution.length * Math.random());
+        var j = Math.floor(solution.length * Math.random());
+
+        var temp = solution[i]
+        solution[i] = solution[j]
+        solution[j] = temp
+
+        return solution
+        
     }
 }
 

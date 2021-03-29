@@ -42,51 +42,57 @@ class ScheduleOptimizer {
             this.users[Object.keys(this.users).length] = element._id
         });
         var userNb = Object.keys(this.users).length
-        
+
 
         this.dispo.forEach(element => {
             if (element.user._id == "604b7273987f7c840c1da410")
                 var rienfaire = "rienfaire"
         })
 
-        var fitnessParam = [this.dispo, this.users, this.timeslots]
+        var fitnessParam = [this.dispo, this.users, this.timeslots];
         console.log(this.timeslots.length + "nombre de slots");
-        var nbGene = this.timeslots.length
-        var etendueGene = [0, userNb]
-        var nbElite = 10
-        var ratioMutation = 10
-        var taillePop = 500
-        var selection = "tournament"
-        var crossover = "onepoint"
-        var mutation = "scrambler"
+        var nbGene = this.timeslots.length;
+        var etendueGene = [0, userNb];
+        var nbElite = 10;
+        var ratioMutation = 0.10;
+        var taillePop = 500;
+        var selection = "tournament";
+        var crossover = "onepoint";
+        var mutation = "swap";
 
         this.AlgoGen = new AlgoGen(nbGene, etendueGene, taillePop,
             ratioMutation, nbElite, selection, crossover, mutation,
             this.fitness, fitnessParam, this.solutionGenerator)
 
-        var t1 = new Date()
         this.AlgoGen.init();
+
+    }
+
+    start() {
+
+
+        var t1 = new Date()
         var i = 0
-        while (i < 250) {
+        while (i < 400) {
             this.AlgoGen.nextGen();
-            i++;            
+            i++;
         }
-        console.log("gen" + i);
+        //console.log("gen" + i);
         var t2 = new Date()
         var dif = (t2 - t1) / 1000
 
         var solution = this.AlgoGen.getCurrentGen()[0]
 
-        console.log(this.AlgoGen.getCurrentGen());
+        //console.log(this.AlgoGen.getCurrentGen());
 
         console.log("Temps en secondes : " + dif);
 
-        
+
         var timeslots = this.timeslots
         var liste = $('#listesolution')
         liste.empty();
 
-        console.log(timeslots[0].slice(6,8));
+        console.log(timeslots[0].slice(6, 8));
 
         var users = this.userDict
         $.each(timeslots, function (i) {
@@ -96,7 +102,7 @@ class ScheduleOptimizer {
                 .appendTo(liste);
             var aaa = $('<a/>')
                 .addClass('ui-all')
-                .text(timeslots[i] + " -- " + (typeof users[solution.solution[i]] !== "undefined"  ? users[solution.solution[i]] : '**LIBRE**')  )
+                .text(timeslots[i] + " -- " + (typeof users[solution.solution[i]] !== "undefined" ? users[solution.solution[i]] : '**LIBRE**'))
                 .appendTo(li);
         });
     }
@@ -110,31 +116,32 @@ class ScheduleOptimizer {
         //console.log(dispo[solution[0]].dispos.indexOf(timeslots[0]));
         var score = 0
 
-        
+
         let lastuser = false
         var currentday, lastday;
 
         for (let index = 0; index < solution.length; index++) {
-            if (solution[index] == -1) {                
+            if (solution[index] == -1) {
                 lastuser = false
                 continue
             }
-            else if (dispo[solution[index]].dispos.indexOf(timeslots[index]) > -1) {                
+            else if (dispo[solution[index]].dispos.indexOf(timeslots[index]) > -1) {
                 score += 15
             }
-            else {                
-                score -= timeslots.length*2            
+            else {
+                score -= timeslots.length * 2
             }
 
-            lastuser = true       
+            lastuser = true
             lastday = currentday
-            currentday = timeslots[0].slice(6,8)
-            
-            if(lastuser && lastday == currentday){
+            currentday = timeslots[0].slice(6, 8)
+
+            if (lastuser && lastday == currentday) {
                 // donnne un meilleur score si les usagers sont collées
                 score += 5
                 lastuser = false
             }
+        
 
 
 
