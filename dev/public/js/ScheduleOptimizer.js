@@ -1,4 +1,4 @@
-
+var t2, t1;
 
 
 class ScheduleOptimizer {
@@ -9,7 +9,10 @@ class ScheduleOptimizer {
         this.userDict = {};
         this.timeslots = [];
         this.AlgoGen = null;
+        this.h1observer = new Observer()
     }
+
+
 
     init() {
 
@@ -42,7 +45,7 @@ class ScheduleOptimizer {
             this.users[Object.keys(this.users).length] = element._id
         });
         var userNb = Object.keys(this.users).length
-        console.log("nombre users" + userNb);
+        //console.log("nombre users" + userNb);
 
         this.dispo.forEach(element => {
             if (element.user._id == "604b7273987f7c840c1da410")
@@ -50,12 +53,12 @@ class ScheduleOptimizer {
         })
 
         var fitnessParam = [this.dispo, this.users, this.timeslots];
-        console.log(this.timeslots.length + "nombre de slots");
+        //console.log(this.timeslots.length + "nombre de slots");
         var nbGene = this.timeslots.length;
         var etendueGene = [0, userNb];
         var nbElite = 10;
         var ratioMutation = 0.10;
-        var taillePop = 250;
+        var taillePop = 500;
         var selection = "tournament";
         var crossover = "onepoint";
         var mutation = "swap";
@@ -65,57 +68,106 @@ class ScheduleOptimizer {
             this.fitness, fitnessParam, this.solutionGenerator)
 
         this.AlgoGen.init();
-        
+
     }
 
     start() {
 
 
-        var t1 = new Date()
+        t1 = new Date()
         var i = 0
 
+
+        const h1 = $("#test");
+        const updateh1 = (contenu) => h1.html(contenu)
+
+        this.h1observer.subscribe(updateh1)
+
         this.AlgoGen.nextGen();
-        
-        while (i < 100) {
-            this.AlgoGen.nextGen();
-            i++;
-        }
-        const genMax = 2000
-        var genCurrent = 0
-        // while(this.AlgoGen.getCurrentGen()[0].fitness < 0 && genCurrent <= genMax ) {
-            //     this.AlgoGen.nextGen();
-            //     genCurrent++;
-            //     console.log(genCurrent);
-            // }
-            
-            //console.log("gen" + i);
-            var t2 = new Date()
-            var dif = (t2 - t1) / 1000
-            
-            var solution = this.AlgoGen.getCurrentGen()[0]
-            
-            console.log(this.AlgoGen.getCurrentGen());
-            
-            
-        console.log("Temps en secondes : " + dif);
 
+        const genMax = 200;
+        var genCurrent = 0;
 
-        var timeslots = this.timeslots
         var liste = $('#listesolution')
         liste.empty();
 
-        console.log(timeslots[0].slice(6, 8));
 
-        var users = this.userDict
-        $.each(timeslots, function (i) {
-            var li = $('<li/>')
-                .addClass('list-group-item ')
-                .appendTo(liste);
-            var aaa = $('<span/>')
-                .addClass('ui-all')
-                .text(timeslots[i] + " -- " + (typeof users[solution.solution[i]] !== "undefined" ? users[solution.solution[i]] : '**LIBRE**'))
-                .appendTo(li);
-        });
+        const solve = (genCurrent) => {
+            this.AlgoGen.nextGen()
+            genCurrent++;
+            this.h1observer.notify(Math.floor(genCurrent / genMax * 100) + "%")
+            if (genCurrent < genMax) window.setTimeout(function () { solve(genCurrent); }, 0);
+            else {
+                t2 = new Date()
+                var dif = (t2 - t1) / 1000
+
+                var solution = this.AlgoGen.getCurrentGen()[0]
+
+                console.log(this.AlgoGen.getCurrentGen());
+
+
+                console.log("Temps en secondes : " + dif);
+
+
+                var timeslots = this.timeslots
+
+
+
+
+                var users = this.userDict
+                $.each(timeslots, function (i) {
+                    var li = $('<li/>')
+                        .addClass('list-group-item ')
+                        .appendTo(liste);
+                    var aaa = $('<span/>')
+                        .addClass('ui-all')
+                        .text(timeslots[i] + " -- " + (typeof users[solution.solution[i]] !== "undefined" ? users[solution.solution[i]] : '**LIBRE**'))
+                        .appendTo(li);
+                });
+            }
+        }
+
+
+        solve(genCurrent);
+
+
+        /*
+while (genCurrent < genMax) {
+    this.AlgoGen.nextGen()
+    genCurrent++
+}
+
+t2 = new Date()
+var dif = (t2 - t1) / 1000
+
+var solution = this.AlgoGen.getCurrentGen()[0]
+
+console.log(this.AlgoGen.getCurrentGen());
+
+
+console.log("Temps en secondes : " + dif);
+
+
+var timeslots = this.timeslots
+
+
+
+
+var users = this.userDict
+$.each(timeslots, function (i) {
+    var li = $('<li/>')
+        .addClass('list-group-item ')
+        .appendTo(liste);
+    var aaa = $('<span/>')
+        .addClass('ui-all')
+        .text(timeslots[i] + " -- " + (typeof users[solution.solution[i]] !== "undefined" ? users[solution.solution[i]] : '**LIBRE**'))
+        .appendTo(li);
+
+
+
+
+})
+*/
     }
 
     fitness(fitnessParam, solution) {
@@ -123,12 +175,11 @@ class ScheduleOptimizer {
         var users = fitnessParam[1]
         var timeslots = fitnessParam[2]
 
-        
+
         // modifier fitness pour réduire le score si tout les usagers ne sont pas représenté
 
         //console.log(dispo[solution[0]].dispos.indexOf(timeslots[0]));
         var score = 0
-
 
         let lastuser = false
         var currentday, lastday;
@@ -141,13 +192,14 @@ class ScheduleOptimizer {
                 continue
             }
             else if (dispo[solution[index]].dispos.indexOf(timeslots[index]) > -1) {
-                score += 15
+                score += Math.floor(timeslots.length / users.length)
                 nbUsager++
             }
             else {
                 score -= timeslots.length * 2
-                nbUsager++
             }
+
+
 
             lastuser = true
             lastday = currentday
@@ -155,23 +207,14 @@ class ScheduleOptimizer {
 
             if (lastuser && lastday == currentday) {
                 // donnne un meilleur score si les usagers sont collées
-                score += 5
+                score += 1
                 lastuser = false
             }
-            
-    
+
+
 
         }
 
-        if(nbUsager != users.length){
-            score -= users.length * 20
-        }
-
-        if (score > 0) {
-            //console.log("Solution parfaite!");
-            //console.log(solution);
-            //console.log(fitnessParam);
-        }
 
         return score
 
@@ -195,7 +238,7 @@ function remplirTableau(valeur, longueur) {
     var tableau = [];
     for (var i = 0; i < longueur; i++) {
         tableau.push(valeur);
-        valeur-=1
+        valeur -= 1
     }
     return tableau;
 }
@@ -206,5 +249,27 @@ function melangerTableau(tableau) {
         var temp = tableau[i];
         tableau[i] = tableau[j];
         tableau[j] = temp;
+    }
+}
+
+/** Observer pattern */
+
+
+class Observer {
+
+    constructor() {
+        this.observers = [];
+    }
+
+    subscribe(subject) {
+        this.observers.push(subject);
+    }
+
+    unsubscribe(subject) {
+        this.observers = this.observers.filter(subscriber => subscriber !== subject);
+    }
+
+    notify(data) {
+        this.observers.forEach(observer => observer(data));
     }
 }

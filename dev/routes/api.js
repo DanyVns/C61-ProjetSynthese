@@ -1,4 +1,3 @@
-const bodyParser = require('body-parser');
 var express = require('express');
 var router = express.Router();
 
@@ -12,23 +11,23 @@ var mongoose = require("mongoose");
 
 router.post('/test', (req, res) => {
 
-    console.log(req.body.event);
+    console.log(req.body);
 
 
 
-    if (!mongoose.Types.ObjectId.isValid(req.body.event)) {
+    if (!mongoose.Types.ObjectId.isValid(req.body.eventID)) {
         req.flash("error", "ID non valide");
         return res.redirect("/index");
     }
 
     async.parallel({
         event: function (callback) {
-            Event.findById(req.body.event)
+            Event.findById(req.body.eventID)
                 .populate('owner')
                 .exec(callback)
         },
         dispo: function (callback) {
-            Dispo.find({ event: req.body.event }, 'dispos user')
+            Dispo.find({ event: req.body.eventID }, 'dispos user')
                 .populate('user')
                 .exec(callback);
         }

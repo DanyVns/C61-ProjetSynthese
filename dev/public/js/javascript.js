@@ -1,47 +1,45 @@
 
-
 window.addEventListener("load", () => {
 
 
-$("#joineventform").submit(function( event ) {    
+  $("#joineventform").submit(function (event) {
     event.preventDefault();
     console.log($('input[type="text"]').val())
-    window.location.replace("/join_event/"+ $('input[type="text"]').val())
+    window.location.replace("/join_event/" + $('input[type="text"]').val())
   });
 
-$( "#test" ).click(function() {
-    $( "h1" ).css("color", "red" );
-    event.preventDefault();        
+  $("#test").click(function () {
+    $("h1").css("color", "red");
+    event.preventDefault();
     ajaxPost(this.getAttribute("eventid"));
   });
 
 });
 
-function ajaxPost(eventID){
-    	
-  // PREPARE FORM DATA
-  var formData = {
-    event : eventID  
-    //event : "605d4347d003c55de4cead60"  
-  }
-  
-  // DO POST
-  $.ajax({
-  type : "POST",
-  contentType : "application/json",
-  url : "../api/test",
-  data : JSON.stringify(formData),
-  dataType : 'json',
-  success : function(data) {
-    console.log(data);
-    scheduleOpt = new ScheduleOptimizer(data);
-    scheduleOpt.init();
-    scheduleOpt.start();
-    },
-  error : function(e) {
-    console.log("ERROR: ", e);
-  }
-});  
-  
+async function ajaxPost(eventID) {
 
-}
+  // PREPARE FORM DATA
+  // let formData = new FormData();
+  // formData.append("eventID", eventID)
+  formData = {
+    eventID:eventID
+  }
+
+  fetch("../api/test", {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(formData),
+    headers: {
+            "Content-Type": "application/json"
+          }
+  })
+    .then(response => response.json())
+    .then(data => {
+       console.log(data);
+       scheduleOpt = new ScheduleOptimizer(data);
+       scheduleOpt.init();
+       scheduleOpt.start();
+
+       // TODO - design patern observer
+     })
+  }

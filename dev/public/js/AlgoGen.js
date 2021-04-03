@@ -13,11 +13,7 @@ class AlgoGen {
         this.mutation = new MutationStrategy(mutation)
         this.currentGen = []
         this.solutionGenerator = solutionFct
-
-
-        //var solution = [1,-1,-1,0,-1,-1,-1,-1,-1,-1, -1,-1,-1,-1,-1]
-        //var solution = [2, -1, 3, 1, 0]
-        //this.fitness(this.fitnessParam, solution);
+        this.newGen = []       
 
     }
 
@@ -41,39 +37,45 @@ class AlgoGen {
     }
 
     nextGen() {
-        var newGen = [];
-
-        // TODO à mettre dans une fonction?
-        // Selon le fitness, copier les meilleurs X parents dans la prochaine generation
-	    for (let i = 0; i < this.nbElite; ++i) {
-            newGen[i] = this.currentGen[i];
-	    }
         
-        for (let i = this.nbElite; i < this.population; i++) {
-     
-            
-            //selection
-            var parent1 = this.selection.select(this.currentGen)
-            
-            var parent2 = this.selection.select(this.currentGen)     
-            
-            
+        this.newGen = []
+        
+        // Fitness
+        this.chooseFitness()   
+	           
+        for (let i = this.nbElite; i < this.population; i++) {     
 
+
+            
+            
+            //Selection
+            var parent1 = this.selection.select(this.currentGen)            
+            var parent2 = this.selection.select(this.currentGen)               
+            
             //Croisement
             var enfant = this.crossover.crossover(parent1.solution, parent2.solution)
-
+            
+            //Mutation
             if (Math.random() < this.ratioMutation) { // 10% de chance
                 enfant.solution = this.mutation.mutate(enfant.solution)
             }
             
+            //Insertion
             enfant.fitness = this.fitness(this.fitnessParam, enfant.solution)
-            newGen.push(enfant)
+            this.newGen.push(enfant)
         }
-        sortPop(newGen);
-        this.currentGen = newGen
+        sortPop(this.newGen);
+        this.currentGen = this.newGen
         //console.log(this.currentGen);
 
 
+    }
+
+    chooseFitness(){        
+        for (let i = 0; i < this.nbElite; ++i) {
+            this.newGen[i] = this.currentGen[i];
+	    }
+        
     }
 
     getCurrentGen(){
