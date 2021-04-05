@@ -85,18 +85,20 @@ class ScheduleOptimizer {
 
         this.AlgoGen.nextGen();
 
-        const genMax = 200;
-        var genCurrent = 0;
+        const genMax = 1000;        
 
         var liste = $('#listesolution')
         liste.empty();
 
 
-        const solve = (genCurrent) => {
-            this.AlgoGen.nextGen()
-            genCurrent++;
+        const solve = (genCurrent = 0, iteration = 0) => {
+            while(genCurrent < Math.floor(genMax/33 * iteration)){
+                this.AlgoGen.nextGen()
+                genCurrent++;
+            }
+            iteration++
             this.h1observer.notify(Math.floor(genCurrent / genMax * 100) + "%")
-            if (genCurrent < genMax) window.setTimeout(function () { solve(genCurrent); }, 0);
+            if (genCurrent < genMax) window.setTimeout(function () { solve(genCurrent, iteration); }, 0);
             else {
                 t2 = new Date()
                 var dif = (t2 - t1) / 1000
@@ -128,46 +130,69 @@ class ScheduleOptimizer {
         }
 
 
-        solve(genCurrent);
+        solve();
 
 
-        /*
-while (genCurrent < genMax) {
-    this.AlgoGen.nextGen()
-    genCurrent++
-}
 
-t2 = new Date()
-var dif = (t2 - t1) / 1000
+    }
 
-var solution = this.AlgoGen.getCurrentGen()[0]
-
-console.log(this.AlgoGen.getCurrentGen());
+    start_sansobserver() {
 
 
-console.log("Temps en secondes : " + dif);
-
-
-var timeslots = this.timeslots
+        t1 = new Date()
+        var i = 0
 
 
 
 
-var users = this.userDict
-$.each(timeslots, function (i) {
-    var li = $('<li/>')
-        .addClass('list-group-item ')
-        .appendTo(liste);
-    var aaa = $('<span/>')
-        .addClass('ui-all')
-        .text(timeslots[i] + " -- " + (typeof users[solution.solution[i]] !== "undefined" ? users[solution.solution[i]] : '**LIBRE**'))
-        .appendTo(li);
+        this.AlgoGen.nextGen();
+
+        const genMax = 2000;
+        var genCurrent = 0;
+
+        var liste = $('#listesolution')
+        liste.empty();
 
 
 
 
-})
-*/
+
+        while (genCurrent < genMax) {
+            this.AlgoGen.nextGen()
+            genCurrent++
+        }
+
+        t2 = new Date()
+        var dif = (t2 - t1) / 1000
+
+        var solution = this.AlgoGen.getCurrentGen()[0]
+
+        console.log(this.AlgoGen.getCurrentGen());
+
+
+        console.log("Temps en secondes : " + dif);
+
+
+        var timeslots = this.timeslots
+
+
+
+
+        var users = this.userDict
+        $.each(timeslots, function (i) {
+            var li = $('<li/>')
+                .addClass('list-group-item ')
+                .appendTo(liste);
+            var aaa = $('<span/>')
+                .addClass('ui-all')
+                .text(timeslots[i] + " -- " + (typeof users[solution.solution[i]] !== "undefined" ? users[solution.solution[i]] : '**LIBRE**'))
+                .appendTo(li);
+
+
+
+
+        })
+
     }
 
     fitness(fitnessParam, solution) {
@@ -272,4 +297,5 @@ class Observer {
     notify(data) {
         this.observers.forEach(observer => observer(data));
     }
+
 }

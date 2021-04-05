@@ -39,6 +39,7 @@ async function ajaxPost(eventID) {
        scheduleOpt = new ScheduleOptimizer(data);
        scheduleOpt.init();
        scheduleOpt.start();
+       //scheduleOpt.start_sansobserver(); // genMax en param
 
        // TODO - design patern observer
      })
