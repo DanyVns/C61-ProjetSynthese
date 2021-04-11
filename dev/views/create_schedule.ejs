@@ -2,12 +2,18 @@
 
     
 
-        <h1>Futur page pour générer horaire pour : <%= event.nom %> </h1>
+        <h1>Générer l'horaire pour : <%= event.nom %> </h1>
 
     <% //dispo[0].dispos pour trouver les arrays de dispos -  %> 
 
-    <button id="test" eventid=<%= event._id %>  type="button" class="btn btn-warning">Test</button>
+    <button id="btn-generate" eventid=<%= event._id %>  type="button" class="btn btn-warning">Générer horaire</button>
+<div class="progress">
+  <div id="progress-bar-solution" class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
      <div class="container" id="solutioncontainer">
+
+
+
         <ul class="list-group" id="listesolution">
 
         </ul>

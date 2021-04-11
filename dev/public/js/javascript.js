@@ -8,8 +8,10 @@ window.addEventListener("load", () => {
     window.location.replace("/join_event/" + $('input[type="text"]').val())
   });
 
-  $("#test").click(function () {
-    $("h1").css("color", "red");
+  $("#btn-generate").click(function () {
+
+    $(".progress-bar").addClass("notransition");
+    $('.progress-bar').attr('style', "width: 0%");    
     event.preventDefault();
     ajaxPost(this.getAttribute("eventid"));
   });
@@ -18,9 +20,6 @@ window.addEventListener("load", () => {
 
 async function ajaxPost(eventID) {
 
-  // PREPARE FORM DATA
-  // let formData = new FormData();
-  // formData.append("eventID", eventID)
   formData = {
     eventID:eventID
   }
@@ -41,6 +40,5 @@ async function ajaxPost(eventID) {
        scheduleOpt.start();
        //scheduleOpt.start_sansobserver(); // genMax en param
 
-       // TODO - design patern observer
      })
   }

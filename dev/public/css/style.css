@@ -7,32 +7,41 @@
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    color: #ffc93c
+  margin: 0;
+  padding: 0;
+  color: #ffc93c
+}
+
+html {
+  font-size: 14px;
 }
 
 body {
-    background-color: var(--navy);
+  background-color: var(--navy);
 }
 
 a {
-    color: white;
+  color: white;
 }
 
-input{
+input {
   background-color: var(--teal);
 }
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: var(--orange);
-    opacity: 1; /* Firefox */
-  }
+hr {
+  border-top: 1px solid #FFF
+}
 
-  .navbar-default {
-    background-color: var(--teal);
-    border-color: var(--teal-light);
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: var(--orange);
+  opacity: 1;
+  /* Firefox */
+}
 
+.navbar-default {
+  background-color: var(--teal);
+  border-color: var(--teal-light);
 }
 
 .navbar-default .navbar-brand {
@@ -43,69 +52,84 @@ input{
   color: var(--jaune);
 }
 
-
 .formulaire {
-    width: 100%;
-    max-width: 330px;
-    padding: 15px;
-    display: block;
-    text-align: center;
+  width: 100%;
+  max-width: 330px;
+  margin: 100px auto;
+  padding: 15px;
+  display: block;
+  text-align: center;
 }
 
-
-
 .btn-signup {
-    display: block;
-    width: 55%;
-    margin: 0 auto 10px;
-    padding: .225rem 0.5rem;
-    font-size: 1.2rem;
-    border-radius: .3rem;
-    color: var(--orange);
-    outline-color: var(--orange);
-    background-color: var(--navy);
-    border-color: var(--orange);
-    font-weight: 800;
+  display: block;
+  width: 55%;
+  margin: 0 auto 10px;
+  padding: .225rem 0.5rem;
+  font-size: 1.2rem;
+  border-radius: .3rem;
+  color: var(--orange);
+  outline-color: var(--orange);
+  background-color: var(--navy);
+  border-color: var(--orange);
+  font-weight: 800;
 }
 
 .input-signup {
-    position: relative;
-    height: auto;
-    padding: 10px;
-    font-size: 16px;
-    color: var(--jaune);
-    background-color: var(--navy);
-    margin-bottom: 5px;
-    border: 3px solid var(--orange);
-    border-radius: 20px;
-    outline-style: inherit;
-    outline-color: var(--orange);
-    text-align: center;
-    }
+  position: relative;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+  color: var(--jaune);
+  background-color: var(--navy);
+  margin-bottom: 5px;
+  border: 3px solid var(--orange);
+  border-radius: 20px;
+  outline-style: inherit;
+  outline-color: var(--orange);
+  text-align: center;
+}
 
+input[type="number"] {
+  width: 100px;
+}
 
-    input[type="number"] {
-        width: 100px;
-      }
-      
-      input + span {
-        padding-right: 30px;
-      }
-      
-      input:invalid+span:after {
-        position: absolute;
-        content: '✖';
-        padding-left: 5px;
-      }
-      
-      input:valid+span:after {
-        position: absolute;
-        content: '✓';
-        padding-left: 5px;
-      }
+input+span {
+  padding-right: 30px;
+}
 
-      .list-group-item {
+input:invalid+span:after {
+  position: absolute;
+  content: '✖';
+  padding-left: 5px;
+}
 
-        background-color: var(--teal);
-;
-    }
+input:valid+span:after {
+  position: absolute;
+  content: '✓';
+  padding-left: 5px;
+}
+
+.list-group-item {
+  background-color: var(--teal);
+  ;
+}
+
+.card {
+  background-color: var(--teal);
+}
+
+.jumbotron {
+  background-color: var(--navy);
+}
+
+.text-muted {
+  color: var(--orange)!important;
+}
+
+.notransition {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}

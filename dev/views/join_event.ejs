@@ -11,27 +11,47 @@
         else{
             dispo = dispo.dispos
         }    
+            const aujourdhui = new Date()
+            const hier = new Date(aujourdhui)
+            hier.setDate(hier.getDate() - 1)   
      %>
-    
 
-        <h1>Joindre évènement </h1>
-        <h2>Propriétaire: <%= event.owner.name %></h2>
-        <h2>Titre : "<%= event.nom %>"</h2>
-        
-        <h2> Description : <%= event.description  %> </h2>      
+ <h1>Joindre évènement </h1>        
 
+ <div class="card text-center">
+  <div class="card-header">
+     De <%= event.start_date.toISOString().split('T')[0] %> jusqu'au <%= event.end_date.toISOString().split('T')[0] %>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"><%= event.nom %></h5>
+    <p class="card-text"><%= event.description  %></p>
+    <h6 class="card-subtitle mb-2 text-muted">Propriétaire : <%= event.owner.name %></h6>    
+  </div>
+  <div class="card-footer text-muted">
+    Date limite pour s'inscrire:  <%= event.limit_date.toISOString().split('T')[0] %>
+  </div>
+</div>
 
+<br>
 
-        
-    
-      
+<hr/>
 
-        
-        <form name="test" method="POST">
-            <% for( let jour=0; jour <=nombreJours; jour++ ) { %>
+        <% if (String(event.owner._id) === String(currentUser._id)) { %>
+            <h1> Le créateur de l'évènement ne peut pas ajouter des disponibilités</h1>
+        <% } else if (hier >= event.limit_date) { %>            
+       
+           <h1> La date limite pour joindre l'évènement est dépassée</h1>
+            <% } else { %>
                 
-                <h3>
-                    <%= dateCourante.toISOString().split('T')[0]; %>
+                
+                
+                
+                
+                <form name="test" method="POST">
+                    <% for( let jour=0; jour <=nombreJours; jour++ ) { %>
+                        
+                        <h3>
+                            <%= dateCourante.toISOString().split('T')[0]; %>
                 </h3>
                 <% for( let index=event.start_time; index <=event.end_time; index++ ) { %>
                     <% 
@@ -40,16 +60,17 @@
                         var moisFormat = mois < 10 ? "0" + mois : mois; 
                         var date = dateCourante.getDate()+1
                         var valeurcheckbox = dateCourante.getFullYear() + moisFormat + date  + heureFormat + "00"
-                    %>
+                        %>
                     <input type="checkbox"  name=<%=valeurcheckbox %>  value="checked" <% if (dispo.includes(valeurcheckbox)) { %> checked <% } %>>
                     <label for=<%=valeurcheckbox %>>
                         <%= heureFormat + ":00" %>
                     </label><br>
                     <% } %>
-                        <br><br>
-                        <% dateCourante.setDate(dateCourante.getDate()+1)%>
-                        <% } %>
-
-                            <input type="submit" value="Submit">
-        </form>
-        <%- include ./partials/footer.ejs %>
+                    <br><br>
+                    <% dateCourante.setDate(dateCourante.getDate()+1)%>
+                    <% } %>
+                    
+                    <input type="submit" value="Submit">
+                </form>
+                <% } %>
+<%- include ./partials/footer.ejs %>

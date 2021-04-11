@@ -1,68 +1,134 @@
 <%- include ./partials/header.ejs %>
-<% function msToHMS( duration ) {
-
-    var millisecondes = parseInt((duration % 1000) / 100),
-       secondes = parseInt((duration / 1000) % 60),
-       minutes = parseInt((duration / (1000 * 60)) % 60),
-       heures = parseInt((duration / (1000 * 60 * 60)) % 24);
-
-     heures = (heures < 10) ? "0" + heures : heures;
-     minutes = (minutes < 10) ? "0" + minutes : minutes;
-     secondes = (secondes < 10) ? "0" + secondes : secondes;
-
-     return heures + ":" + minutes + ":" + secondes ;
-}
-
-%> 
-  
-    <% if (Date.now() - currentUser.createdAt < 1000) { %>
-        <h1>Bienvenue nouvel usager</h1>     
-    <% } else { %>
-        <h1>Login réussi! Nombre d'usagers : <%=  data.user_count %>  </h1>     
-    <% } %>
-
-
+<% function msToHMS( duration ) { 
+    var millisecondes=parseInt((duration % 1000) / 100);
+    secondes=parseInt((duration / 1000) % 60);
+    minutes=parseInt((duration / (1000 * 60)) % 60);
+    heures=parseInt((duration / (1000 * 60 * 60)) % 24); 
+    heures=(heures < 10) ? "0" + heures : heures; 
+    minutes=(minutes < 10) ? "0" + minutes : minutes;
+    secondes=(secondes < 10) ? "0" + secondes : secondes; return heures + ":" + minutes + ":" + secondes ; } 
     
-    <% if (data.event_owner.length > 0) { %>
-        <h1>Évènement créés : </h1>        
-    <% } %>
-    <ul>
-        <% data.event_owner.forEach(element => { %>
-         <li>  <a href="/join_event/<%= element._id %>"><%= element.nom + " - " + element.description + " "%></a>  
-            <% data.event_count_user.forEach(count => { %>                
-                <% if (count._id.toString() === element._id.toString()) { %>
-                    == Nombre d'usagers inscrits : <%= count.total %> 
-                <% } %>
-                
-            <% }) %>
-            <button type="button" class="btn btn-danger"> <a href="/generate_schedule/<%= element._id %>">Générer horaire</a></a></button></li>
-        <% }) %>
-    </ul>
+    const aujourdhui = new Date()
+    const hier = new Date(aujourdhui)
+    hier.setDate(hier.getDate() - 1)    
+    %>
 
-    <% if (data.dispo_event.length > 0) { %>  
-        <h1>Évènement joints : </h1>        
-    <% } %>
-    <% if (data.dispo_event.length > 0) { %>
-     
-        <ul>
-            <% data.dispo_event.forEach(element => { %>
-                <li>  <a href="/join_event/<%= element.event._id %>"><%= element.event.nom + " - " + element.event.description %></a></li>
-                <% }) %>
-            </ul>
-            <% } %>
-            
-
-
+<% if (Date.now() - currentUser.createdAt < 1000) { %>
+    <h1>Bienvenue nouvel usager</h1>
+<% } else { %>
+    <h1>Bienvenue <%=currentUser.name %>
+    </h1>
+<% } %>
+<hr>
 <button type="button" class="btn btn-danger"> <a href="/create_event">Créer un évènement</a></a></button>
+<br> <br>
+    <form id="joineventform" action=""
+    autocomplete="off">
+    <label for="event_id">Pour joindre un évènement, veuillez fournir l'ID de l'évènement:</label>
+    <input type="text"  size="30"name="event_id" placeholder="ID de l'évènement"
+        value="Ex : 6057a483396dbc1eb0f020d6">
+    <button type="submit" class="btn btn-danger">Soumettre</button>
+
+    </form>
+
+    <hr>
+
+<% if (data.event_owner.length> 0) { let nbEve = 0 %>
+    <h1>Évènement créés : </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nom</th>
+                <th scope="col">De</th>
+                <th scope="col">À</th>
+                <th scope="col">Date limite</th>
+                <th scope="col">Nombre d'inscrits</th>
+                <th scope="col">ID évènement</th>                                    
+                <th scope="col">Horaire</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.event_owner.forEach(element=> { %>
+                <tr>
+                    <%=  %> 
+                    <th scope="row"><%= ++nbEve %> </th>
+                    <td><%=element.nom  %></td>
+                    <td><%=element.start_date.toISOString().split('T')[0]%></td>
+                    <td><%=element.end_date.toISOString().split('T')[0]%></td>
+                    <td><%=element.limit_date.toISOString().split('T')[0]%></td>
+                    <td><%  var found = false 
+                            data.event_count_user.forEach(count=> { %>
+                                <% if (count._id.toString()===element._id.toString()) {  found = true %>                                               
+                                    <%= count.total %>
+                                        <% } %>
+                                            
+                            <% }) %>
+                            <% if (!found) { %>
+                                0
+                            <% } %> </td>
+                    <td><a href="/join_event/<%= element._id %>">
+                        <%= element._id %>
+                    </a></td>
+                    <td> <a href="/generate_schedule/<%= element._id %>" class="btn btn-danger" role="button" 
+                        <%= (hier <= element.limit_date) ? "disabled" : "";%>>Générer</a></td>
+
+                </tr>
+
+                <% }) %>
+
+
+        </tbody>
+    </table>
 
 
 
-<form  id="joineventform" class="formulaire register-form" action="" autocomplete="off">
-<label  for="event_id">Veuillez fournir l'ID de l'évènement:</label>
-<input  type="text" name="event_id" placeholder="ID de l'évènement" value="6057a483396dbc1eb0f020d6">
-<button type="submit" class="btn btn-danger" >Joindre évènement </button>
+    <% } %>
 
-</form>
+    <hr>
+
+    <% if (data.dispo_event.length> 0) { let nbEve = 0 %>
+        <h1>Évènement joints : </h1>
+        <% if (data.dispo_event.length> 0) { %>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">De</th>
+                        <th scope="col">À</th>
+                        <th scope="col">Date limite pour l'inscription</th>          
+                        <th scope="col">Modifier disponibilités</th>                                 
+                        </tr>
+                        </thead>
+        <tbody>
+            <% data.dispo_event.forEach(element=> { %>
+                <tr>
+                    <%=  %> 
+                    <th scope="row"><%= ++nbEve %> </th>
+                    <td><%=element.event.nom  %></td>
+                    <td><%=element.event.description  %></td>
+                    <td><%=element.event.start_date.toISOString().split('T')[0]%></td>
+                    <td><%=element.event.end_date.toISOString().split('T')[0]%></td>
+                    <td><%=element.event.limit_date.toISOString().split('T')[0]%></td>                  
+                    <td><a href="/join_event/<%= element.event._id %>"> Lien </a></td>
+                </tr>
+                    <% }) %>
+             
+                    <% } %>
+               
+        </tbody>
+        </table>
+    <% } %>
+                    
+                    
+                    
+
+                    
+                    
 
 
-<%- include ./partials/footer.ejs %>
+
+    <%- include ./partials/footer.ejs %>

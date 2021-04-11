@@ -34,7 +34,7 @@ exports.index = function(req, res) {
         }       
         
     }, function(err, results) {       
-        console.log(results.event_count_user);   
+        
         res.render('index', { title: 'Audience', error: err, data: results });
         
     });

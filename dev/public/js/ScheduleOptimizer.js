@@ -9,7 +9,7 @@ class ScheduleOptimizer {
         this.userDict = {};
         this.timeslots = [];
         this.AlgoGen = null;
-        this.h1observer = new Observer()
+        this.progressobserver = new Observer()
     }
 
 
@@ -58,7 +58,7 @@ class ScheduleOptimizer {
         var etendueGene = [0, userNb];
         var nbElite = 10;
         var ratioMutation = 0.10;
-        var taillePop = 500;
+        var taillePop = 1000;
         var selection = "tournament";
         var crossover = "onepoint";
         var mutation = "swap";
@@ -77,11 +77,11 @@ class ScheduleOptimizer {
         t1 = new Date()
         var i = 0
 
+        const progress_bar = $("#progress-bar-solution");
+        const update_progress = (taille) => progress_bar.width(taille)
+        update_progress(0)
 
-        const h1 = $("#test");
-        const updateh1 = (contenu) => h1.html(contenu)
-
-        this.h1observer.subscribe(updateh1)
+        this.progressobserver.subscribe(update_progress)
 
         this.AlgoGen.nextGen();
 
@@ -97,7 +97,7 @@ class ScheduleOptimizer {
                 genCurrent++;
             }
             iteration++
-            this.h1observer.notify(Math.floor(genCurrent / genMax * 100) + "%")
+            this.progressobserver.notify(Math.floor(genCurrent / genMax * 100) + "%")
             if (genCurrent < genMax) window.setTimeout(function () { solve(genCurrent, iteration); }, 0);
             else {
                 t2 = new Date()
