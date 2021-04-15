@@ -211,8 +211,7 @@ function solutionFormat(solution)   {
     let positions = [8,6,4]
     let solutionFormat = solution
     positions.forEach(position => {
-        solutionFormat = [solutionFormat.slice(0, position), insert, solutionFormat.slice(position)].join('');
-        console.log(solutionFormat);
+        solutionFormat = [solutionFormat.slice(0, position), insert, solutionFormat.slice(position)].join('');        
     });
 
     solutionFormat = [solutionFormat.slice(0, -2), "h", solutionFormat.slice(-2)].join('');
