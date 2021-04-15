@@ -67,6 +67,8 @@ class ScheduleOptimizer {
 
     }
 
+
+
     start() {
 
 
@@ -116,7 +118,7 @@ class ScheduleOptimizer {
                         .appendTo(liste);
                     var aaa = $('<span/>')
                         .addClass('ui-all')
-                        .text(timeslots[i] + " -- " + (typeof users[solution.solution[i]] !== "undefined" ? users[solution.solution[i]] : '**LIBRE**'))
+                        .text(solutionFormat(timeslots[i]) + " -- " + (typeof users[solution.solution[i]] !== "undefined" ? users[solution.solution[i]] : '**LIBRE**'))
                         .appendTo(li);
                 });
             }
@@ -128,6 +130,8 @@ class ScheduleOptimizer {
 
 
     }   
+
+
 
     fitness(fitnessParam, solution) {
         var dispo = fitnessParam[0]
@@ -200,6 +204,21 @@ function remplirTableau(valeur, longueur) {
         valeur -= 1
     }
     return tableau;
+}
+
+function solutionFormat(solution)   {
+    let insert = "-"
+    let positions = [8,6,4]
+    let solutionFormat = solution
+    positions.forEach(position => {
+        solutionFormat = [solutionFormat.slice(0, position), insert, solutionFormat.slice(position)].join('');
+        console.log(solutionFormat);
+    });
+
+    solutionFormat = [solutionFormat.slice(0, -2), "h", solutionFormat.slice(-2)].join('');
+    
+
+    return solutionFormat
 }
 
 function melangerTableau(tableau) {
