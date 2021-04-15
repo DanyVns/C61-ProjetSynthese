@@ -35,7 +35,7 @@
 <br>
 
 <hr/>
-<% console.log(hier); console.log(event.limit_date); %> 
+
         <% if (String(event.owner._id) === String(currentUser._id)) { %>
             <h1> Le créateur de l'évènement ne peut pas ajouter des disponibilités</h1>
         <% } else if (hier >= event.limit_date) { %>            
