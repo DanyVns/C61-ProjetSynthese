@@ -26,7 +26,7 @@
     autocomplete="off">
     <label for="event_id">Pour joindre un évènement, veuillez fournir l'ID de l'évènement:</label>
     <input type="text"  size="30"name="event_id" placeholder="ID de l'évènement"
-        value="Ex : 6057a483396dbc1eb0f020d6">
+        value="Ex : 6057a483396dbc1eb0f020d6" onfocus="this.value=''">
     <button type="submit" class="btn btn-danger">Soumettre</button>
 
     </form>
@@ -109,7 +109,9 @@
                     <%=  %> 
                     <th scope="row"><%= ++nbEve %> </th>
                     <td><%=element.event.nom  %></td>
-                    <td><%=element.event.description  %></td>
+                    <td> <%if (element.event.description.length > 50) { %>
+                        <%=element.event.description.substring(0, 25) + "[...]" %>
+                        <%} else { %>  <%=element.event.description %> <%} %></td>
                     <td><%=element.event.start_date.toISOString().split('T')[0]%></td>
                     <td><%=element.event.end_date.toISOString().split('T')[0]%></td>
                     <td><%=element.event.limit_date.toISOString().split('T')[0]%></td>                  
