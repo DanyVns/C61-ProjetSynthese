@@ -44,9 +44,9 @@
                 <th scope="col">Nom</th>
                 <th scope="col">De</th>
                 <th scope="col">À</th>
-                <th scope="col">Date limite</th>
                 <th scope="col">Nombre d'inscrits</th>
                 <th scope="col">ID évènement</th>                                    
+                <th scope="col">Date limite</th>
                 <th scope="col">Horaire</th>
             </tr>
         </thead>
@@ -58,22 +58,21 @@
                     <td><%=element.nom  %></td>
                     <td><%=element.start_date.toISOString().split('T')[0]%></td>
                     <td><%=element.end_date.toISOString().split('T')[0]%></td>
-                    <td><%=element.limit_date.toISOString().split('T')[0]%></td>
                     <td><%  var found = false 
                             data.event_count_user.forEach(count=> { %>
                                 <% if (count._id.toString()===element._id.toString()) {  found = true %>                                               
                                     <%= count.total %>
-                                        <% } %>
-                                            
-                            <% }) %>
-                            <% if (!found) { %>
-                                0
-                            <% } %> </td>
-                    <td><a href="/join_event/<%= element._id %>">
-                        <%= element._id %>
-                    </a></td>
-                    <td> <a href="/generate_schedule/<%= element._id %>" class="btn btn-danger" role="button" 
-                        <%= (hier <= element.limit_date) ? "disabled" : "";%>>Générer</a></td>
+                                    <% } %>
+                                    
+                                    <% }) %>
+                                    <% if (!found) { %>
+                                        0
+                                        <% } %> </td>
+                                        <td><a href="/join_event/<%= element._id %>">
+                                            <%= element._id %>
+                                            </a></td>
+                    <td><%=element.limit_date.toISOString().split('T')[0]%></td>
+                    <td> <button onclick="document.location='/generate_schedule/<%= element._id %>'" <%= (hier <= element.limit_date) ? "disabled" : "";%> class="btn btn-danger" role="button">Générer</button></td>
 
                 </tr>
 

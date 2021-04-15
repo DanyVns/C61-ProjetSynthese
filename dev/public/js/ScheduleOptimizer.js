@@ -47,10 +47,6 @@ class ScheduleOptimizer {
         var userNb = Object.keys(this.users).length
         //console.log("nombre users" + userNb);
 
-        this.dispo.forEach(element => {
-            if (element.user._id == "604b7273987f7c840c1da410")
-                var rienfaire = "rienfaire"
-        })
 
         var fitnessParam = [this.dispo, this.users, this.timeslots];
         //console.log(this.timeslots.length + "nombre de slots");
@@ -113,9 +109,6 @@ class ScheduleOptimizer {
 
                 var timeslots = this.timeslots
 
-
-
-
                 var users = this.userDict
                 $.each(timeslots, function (i) {
                     var li = $('<li/>')
@@ -134,66 +127,7 @@ class ScheduleOptimizer {
 
 
 
-    }
-
-    start_sansobserver() {
-
-
-        t1 = new Date()
-        var i = 0
-
-
-
-
-        this.AlgoGen.nextGen();
-
-        const genMax = 2000;
-        var genCurrent = 0;
-
-        var liste = $('#listesolution')
-        liste.empty();
-
-
-
-
-
-        while (genCurrent < genMax) {
-            this.AlgoGen.nextGen()
-            genCurrent++
-        }
-
-        t2 = new Date()
-        var dif = (t2 - t1) / 1000
-
-        var solution = this.AlgoGen.getCurrentGen()[0]
-
-        console.log(this.AlgoGen.getCurrentGen());
-
-
-        console.log("Temps en secondes : " + dif);
-
-
-        var timeslots = this.timeslots
-
-
-
-
-        var users = this.userDict
-        $.each(timeslots, function (i) {
-            var li = $('<li/>')
-                .addClass('list-group-item ')
-                .appendTo(liste);
-            var aaa = $('<span/>')
-                .addClass('ui-all')
-                .text(timeslots[i] + " -- " + (typeof users[solution.solution[i]] !== "undefined" ? users[solution.solution[i]] : '**LIBRE**'))
-                .appendTo(li);
-
-
-
-
-        })
-
-    }
+    }   
 
     fitness(fitnessParam, solution) {
         var dispo = fitnessParam[0]
@@ -201,7 +135,7 @@ class ScheduleOptimizer {
         var timeslots = fitnessParam[2]
 
 
-        // modifier fitness pour réduire le score si tout les usagers ne sont pas représenté
+        // TODO modifier fitness pour réduire le score si tout les usagers ne sont pas représenté
 
         //console.log(dispo[solution[0]].dispos.indexOf(timeslots[0]));
         var score = 0
