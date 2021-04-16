@@ -75,7 +75,7 @@ router.get('/create_event', ensureAuthenticated, event_controller.create_event_g
 
 router.post('/create_event', ensureAuthenticated, event_controller.create_event_post);
 
-router.get('/join_event/:id', ensureAuthenticated, event_controller.join_event_get);
+router.get('/join_event/:id/', ensureAuthenticated, event_controller.join_event_get);
 
 router.post('/join_event/:id', ensureAuthenticated, event_controller.join_event_post);
 

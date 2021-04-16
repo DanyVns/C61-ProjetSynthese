@@ -40,7 +40,7 @@ class AlgoGen {
         
         this.newGen = []
         
-        // Fitness
+        // Elite
         this.chooseFitness()   
 	           
         for (let i = this.nbElite; i < this.population; i++) {     
