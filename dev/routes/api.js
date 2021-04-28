@@ -9,7 +9,7 @@ var mongoose = require("mongoose");
 
 
 
-router.post('/test', (req, res) => {
+router.post('/schedule', (req, res) => {
 
     console.log(req.body);
 
