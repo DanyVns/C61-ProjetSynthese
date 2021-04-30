@@ -66,23 +66,41 @@ function showSolution(solution, timeslots, users, errors) {
         .addClass('ui-all')        
         .text(errors[i])
         .appendTo(li);
-    });    
-  }
-  $.each(timeslots, function (i) {
-    var li = $('<li/>')
+    });  
+    // afficher seulement les usagers non inclus dans les erreurs  
+    $.each(timeslots, function (i) {
+      var li = $('<li/>')
       .addClass('list-group-item ')
       .appendTo(liste);
-    let caseHoraire = ""
-    if(typeof users[solution.solution[i]] == "undefined" || errors.includes(users[solution.solution[i]]))
+      let caseHoraire = ""
+      if(typeof users[solution.solution[i]] == "undefined" || errors.includes(users[solution.solution[i]]))
       caseHoraire = "**LIBRE**"
-    else 
+      else 
       caseHoraire = users[solution.solution[i]]
-    
-    var aaa = $('<span/>')
+      
+      var aaa = $('<span/>')
       .addClass('ui-all')      
       .text(solutionFormat(timeslots[i]) + " -- " + caseHoraire)
       .appendTo(li);
-  });
+    });
+  }
+  else { // afficher tous les usagers - sans erreur
+    $.each(timeslots, function (i) {
+      var li = $('<li/>')
+      .addClass('list-group-item ')
+      .appendTo(liste);
+      let caseHoraire = ""
+      if(typeof users[solution.solution[i]] == "undefined")
+        caseHoraire = "**LIBRE**"
+      else 
+        caseHoraire = users[solution.solution[i]]
+      
+      var aaa = $('<span/>')
+      .addClass('ui-all')      
+      .text(solutionFormat(timeslots[i]) + " -- " + caseHoraire)
+      .appendTo(li);
+    });
+  }
 
 
 
