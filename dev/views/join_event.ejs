@@ -35,7 +35,7 @@
 <br>
 
 <hr/>
-<% console.log(hier); console.log(event.limit_date); %> 
+
         <% if (String(event.owner._id) === String(currentUser._id)) { %>
             <h1> Le créateur de l'évènement ne peut pas ajouter des disponibilités</h1>
         <% } else if (hier >= event.limit_date) { %>            
@@ -44,19 +44,24 @@
             <% } else { %>               
 
                 <form name="test" method="POST">
+                    <div class="row">
                     <% for( let jour=0; jour <=nombreJours; jour++ ) { %>
-                        
+                       <div class="col-lg-3 md-4">
                         <h3>
                             <%= dateCourante.toISOString().split('T')[0]; %>
-                </h3>
+                            </h3>
                 <% for( let index=event.start_time; index <=event.end_time; index++ ) { %>
                     <% 
-                        var heureFormat = index < 10 ? "0" + index : index 
+                        let nbCasehoraire = 0;
+                        var heureFormat = index < 10 ? "0" + index : index;
                         var mois = dateCourante.getMonth()+1
                         var moisFormat = mois < 10 ? "0" + mois : mois; 
                         var date = dateCourante.getDate()+1
                         var valeurcheckbox = dateCourante.getFullYear() + moisFormat + date  + heureFormat + "00"
                         %>
+                    <% if (nbCasehoraire % 6 == 0) { %>
+                     
+                    <% } %>
                     <input type="checkbox"  name=<%=valeurcheckbox %>  value="checked" <% if (dispo.includes(valeurcheckbox)) { %> checked <% } %>>
                     <label for=<%=valeurcheckbox %>>
                         <%= heureFormat + ":00" %>
@@ -64,9 +69,12 @@
                     <% } %>
                     <br><br>
                     <% dateCourante.setDate(dateCourante.getDate()+1)%>
+                    </div> 
                     <% } %>
                     
-                    <input type="submit" value="Submit">
+                </div>
+                    <input class="btn btn-danger" type="submit" value="Soumettre">
                 </form>
+                <hr>
                 <% } %>
 <%- include ./partials/footer.ejs %>

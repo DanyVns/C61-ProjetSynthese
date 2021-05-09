@@ -1,27 +1,27 @@
 <%- include ./partials/header.ejs %>
-<% if (created) { %>
-    <h2>Évènement "<%= newEvent.nom %>" créé avec le numéro suivant : <%= newEvent._id %> </h2>
-    <% }%>
-  
-<h1>Créer un évènement : </h1>
-<form class="formulaire register-form" action="" method="post" autocomplete="off">
-<input class="input-signup" type="text" name="title" placeholder="Titre" required>
-<textarea  class="input-signup"  rows="10" cols="30" name="description" placeholder="Description"></textarea>
-<label  for="start_date">Date de début:</label>
-<input  type="date" name="start_date" >
-<label  for="end_date">Date de fin:</label>
-<input  type="date" name="end_date" >
-<label  for="start_time">Heure de début (8 - 17):</label>
-<input type="number" i name="start_time" min="8" max="17" value="8"><span class="validity"></span>
-<label  for="end_time">Heure de fin (9 - 18):</label>
-<input type="number"  name="end_time" min="9" max="18" value="18"><span class="validity"></span>
-<br>
-<label  for="limit_date">Date limite:</label>
-<input  type="date" name="limit_date" >
-<button class="btn-signup">
-    Créér l'évènement
-</button>
-</form>
+    <% if (created) { %>
+        <h2>
+            Évènement "<%= newEvent.nom %>" créé avec le numéro suivant : <%= newEvent._id %>
+        </h2>
+        <% }%>
 
+            <h1>Créer un évènement :</h1>
+            <form class="formulaire register-form" action="" method="post" autocomplete="off">
+                <input class="input-signup" type="text" name="title" placeholder="Titre" required />
+                <textarea class="input-signup" rows="10" cols="30" name="description"
+                    placeholder="Description"></textarea>
+                <label for="start_date">Date de début:</label>
+                <input type="date" name="start_date" />
+                <label for="end_date">Date de fin:</label>
+                <input type="date" name="end_date" />
+                <label for="start_time">Heure de début (8 - 17):</label>
+                <input type="number" i name="start_time" min="8" max="17" value="8" /><span class="validity"></span>
+                <label for="end_time">Heure de fin (9 - 18):</label>
+                <input type="number" name="end_time" min="9" max="18" value="18" /><span class="validity"></span>
+                <br />
+                <label for="limit_date">Date limite:</label>
+                <input type="date" name="limit_date" />
+                <button class="btn-signup">Créér l'évènement</button>
+            </form>
 
-<%- include ./partials/footer.ejs %>
+            <%- include ./partials/footer.ejs %>

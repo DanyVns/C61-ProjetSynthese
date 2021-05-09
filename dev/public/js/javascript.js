@@ -1,4 +1,4 @@
-
+var afficherLibre = false;
 window.addEventListener("load", () => {
 
 
@@ -12,7 +12,15 @@ window.addEventListener("load", () => {
 
     $(".progress-bar").addClass("notransition");
     $('.progress-bar').attr('style', "width: 0%");
+    if ($('#showEmpty').is(":checked"))
+      {
+        afficherLibre = true
+      }
+    else
+      afficherLibre = false
+   
     event.preventDefault();
+    $
     ajaxPost(this.getAttribute("eventid"));
   });
 
@@ -69,36 +77,40 @@ function showSolution(solution, timeslots, users, errors) {
     });  
     // afficher seulement les usagers non inclus dans les erreurs  
     $.each(timeslots, function (i) {
-      var li = $('<li/>')
-      .addClass('list-group-item ')
-      .appendTo(liste);
       let caseHoraire = ""
       if(typeof users[solution.solution[i]] == "undefined" || errors.includes(users[solution.solution[i]]))
       caseHoraire = "**LIBRE**"
       else 
       caseHoraire = users[solution.solution[i]]
+      if(!(caseHoraire == "**LIBRE**" && !afficherLibre) ){
+      var li = $('<li/>')
+      .addClass('list-group-item ')
+      .appendTo(liste);
       
       var aaa = $('<span/>')
       .addClass('ui-all')      
       .text(solutionFormat(timeslots[i]) + " -- " + caseHoraire)
       .appendTo(li);
+      }
     });
   }
   else { // afficher tous les usagers - sans erreur
     $.each(timeslots, function (i) {
-      var li = $('<li/>')
-      .addClass('list-group-item ')
-      .appendTo(liste);
       let caseHoraire = ""
       if(typeof users[solution.solution[i]] == "undefined")
         caseHoraire = "**LIBRE**"
       else 
         caseHoraire = users[solution.solution[i]]
-      
-      var aaa = $('<span/>')
-      .addClass('ui-all')      
-      .text(solutionFormat(timeslots[i]) + " -- " + caseHoraire)
-      .appendTo(li);
+        if(!(caseHoraire == "**LIBRE**" && !afficherLibre) ){
+      var li = $('<li/>')
+      .addClass('list-group-item ')
+      .appendTo(liste);
+        var aaa = $('<span/>')
+        .addClass('ui-all')      
+        .text(solutionFormat(timeslots[i]) + " -- " + caseHoraire)
+        .appendTo(li);
+      }
+
     });
   }
 
