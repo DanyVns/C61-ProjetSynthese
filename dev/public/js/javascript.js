@@ -9,6 +9,7 @@ window.addEventListener("load", () => {
   });
 
   $("#btn-generate").click(function () {
+    $(".progress").removeClass("d-none")
     $("#solutioncontainer").addClass("d-none")
     $(".progress-bar").addClass("notransition");
     $('.progress-bar').attr('style', "width: 0%");
@@ -57,6 +58,7 @@ function startAlgo(data) {
 
 function showSolution(solution, timeslots, users, errors) {
   $("#solutioncontainer").removeClass("d-none")
+  $(".progress").addClass("d-none")
   $("#solutionErrorTitle").html("")
   var listeError = $("#solutionErrorListe")
   listeError.html("")
@@ -78,24 +80,26 @@ function showSolution(solution, timeslots, users, errors) {
     });  
     // afficher seulement les usagers non inclus dans les erreurs  
     $.each(timeslots, function (i) {
+      let timeslotFormatee = [];
+      timeslotFormatee = solutionFormat(timeslots[i])
       let caseHoraire = ""
       if(typeof users[solution.solution[i]] == "undefined" || errors.includes(users[solution.solution[i]]))
       caseHoraire = "**LIBRE**"
       else 
       caseHoraire = users[solution.solution[i]]
       if(!(caseHoraire == "**LIBRE**" && !afficherLibre) ){
-      var tr = $('<tr/>')
-      .addClass('list-group-item ')
-      .appendTo(liste);
-      
-
-
-      var td = $('<span/>')         
-      .text(solutionFormat(timeslots[i]))
-      .appendTo(tr);
-      var td2 = $('<span/>')         
-      .text(solutionFormat(caseHoraire))
-      .appendTo(tr);
+        var tr = $('<tr/>')
+        .appendTo(liste);
+        
+        var th = $('<th/>')         
+        .text(timeslotFormatee[0])
+        .appendTo(tr);
+        var th2 = $('<th/>')         
+        .text(timeslotFormatee[1])
+        .appendTo(tr);
+        var td = $('<td/>')         
+        .text(caseHoraire)
+        .appendTo(tr);
       }
     });
   }
