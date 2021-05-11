@@ -13,6 +13,7 @@
     hier.setDate(hier.getDate() - 1)    
     %>
 
+
 <% if (Date.now() - currentUser.createdAt < 1000) { %>
     <h1>Bienvenue nouvel usager</h1>
 <% } else { %>
@@ -68,9 +69,9 @@
                                     <% if (!found) { %>
                                         0
                                         <% } %> </td>
-                                        <td><a href="/join_event/<%= element._id %>">
-                                            <%= element._id %>
-                                            </a></td>
+                    <td><span onclick="copyToClipboard('<%= element._id %>')"><u><strong>Cliquez pour copier</strong></u></span>
+                                           
+                                            </td>
                     <td><%=element.limit_date.toISOString().split('T')[0]%></td>
                     <td> <button onclick="document.location='/generate_schedule/<%= element._id %>'" <%= (hier <= element.limit_date) ? "disabled" : "";%> class="btn btn-danger" role="button">Générer</button></td>
 

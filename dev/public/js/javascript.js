@@ -25,7 +25,15 @@ window.addEventListener("load", () => {
     ajaxPost(this.getAttribute("eventid"));
   });
 
+
+
 });
+
+
+
+function copyToClipboard(event) {
+  console.log(event.text);
+}
 
 async function ajaxPost(eventID) {
 
@@ -50,6 +58,17 @@ async function ajaxPost(eventID) {
     })
 }
 
+
+function copyToClipboard(text) {
+  const elem = document.createElement('textarea');
+  elem.value = text;
+  document.body.appendChild(elem);
+  elem.select();
+  document.execCommand('copy');
+  document.body.removeChild(elem);
+  alert("L'ID est copié dans votre presse-papiers")
+}
+
 function startAlgo(data) {
   scheduleOpt = new ScheduleOptimizer(data, showSolution);
   scheduleOpt.init();
@@ -61,9 +80,11 @@ function showSolution(solution, timeslots, users, errors) {
   $(".progress").addClass("d-none")
   $("#solutionErrorTitle").html("")
   var listeError = $("#solutionErrorListe")
+  let caseHoraire = ""
+  let timeslotFormatee = [];
   listeError.html("")
-  var liste = $('#solutionBody')
-  liste.empty();
+  var table = $('#solutionBody')
+  table.empty();
   if (errors) {    
     console.log(errors);
     $("#solutionErrorTitle").html("Attention! L'horaire généré n'a pas fournir une case horaire pour le ou les utilisateur(s) suivants : ")
@@ -79,60 +100,45 @@ function showSolution(solution, timeslots, users, errors) {
         .appendTo(li);
     });  
     // afficher seulement les usagers non inclus dans les erreurs  
-    $.each(timeslots, function (i) {
-      let timeslotFormatee = [];
-      timeslotFormatee = solutionFormat(timeslots[i])
-      let caseHoraire = ""
+    $.each(timeslots, function (i) {      
+      timeslotFormatee = solutionFormat(timeslots[i])    
       if(typeof users[solution.solution[i]] == "undefined" || errors.includes(users[solution.solution[i]]))
       caseHoraire = "**LIBRE**"
       else 
       caseHoraire = users[solution.solution[i]]
       if(!(caseHoraire == "**LIBRE**" && !afficherLibre) ){
-        var tr = $('<tr/>')
-        .appendTo(liste);
-        
-        var th = $('<th/>')         
-        .text(timeslotFormatee[0])
-        .appendTo(tr);
-        var th2 = $('<th/>')         
-        .text(timeslotFormatee[1])
-        .appendTo(tr);
-        var td = $('<td/>')         
-        .text(caseHoraire)
-        .appendTo(tr);
+        appendToTable(table, timeslotFormatee, caseHoraire)
       }
     });
   }
   else { // afficher tous les usagers - sans erreur
     $.each(timeslots, function (i) {
-      let timeslotFormatee = [];
-      timeslotFormatee = solutionFormat(timeslots[i])
-      
-      let caseHoraire = ""
+      timeslotFormatee = solutionFormat(timeslots[i])           
+
       if(typeof users[solution.solution[i]] == "undefined")
         caseHoraire = "**LIBRE**"
       else 
         caseHoraire = users[solution.solution[i]]
         if(!(caseHoraire == "**LIBRE**" && !afficherLibre) ){
-          var tr = $('<tr/>')
-          .appendTo(liste);
-          
-          var th = $('<th/>')         
-          .text(timeslotFormatee[0])
-          .appendTo(tr);
-          var th2 = $('<th/>')         
-          .text(timeslotFormatee[1])
-          .appendTo(tr);
-          var td = $('<td/>')         
-          .text(caseHoraire)
-          .appendTo(tr);
+          appendToTable(table, timeslotFormatee, caseHoraire)
       }
 
     });
   }
+}
 
-
-
+function appendToTable(table, timeslot, nom){
+       var tr = $('<tr/>')
+          .appendTo(table);          
+          var th = $('<th/>')         
+          .text(timeslot[0])
+          .appendTo(tr);
+          var th2 = $('<th/>')         
+          .text(timeslot[1])
+          .appendTo(tr);
+          var td = $('<td/>')         
+          .text(nom)
+          .appendTo(tr);
 }
 
 function solutionFormat(solution) {
