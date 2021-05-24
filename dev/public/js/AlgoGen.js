@@ -44,8 +44,6 @@ class AlgoGen {
         this.chooseFitness()   
 	           
         for (let i = this.nbElite; i < this.population; i++) {     
-
-
             
             
             //Selection
