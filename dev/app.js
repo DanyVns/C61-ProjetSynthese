@@ -1,4 +1,5 @@
 var createError = require('http-errors'); // pour la gestion des erreur 
+// Module express *************************************************************************************************
 var express = require('express'); // Express
 var path = require('path'); // Pour naviguer dans les dossiers
 var bodyParser = require("body-parser"); // pour parse les adresse URL reçue
@@ -13,7 +14,7 @@ var session = require("express-session"); // pour utiliser les variables de sess
 var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
 
-
+// *************************************************************************************************************
 var app = express();
 //mongoose.connect("mongodb://localhost:27017/testAudience", { useNewUrlParser: true, useUnifiedTopology: true} )
 mongoose.connect("mongodb+srv://dbUser:AAAaaa111@cluster0.dcfkf.mongodb.net/Audience?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true} )
@@ -21,7 +22,7 @@ mongoose.set('useCreateIndex', true); // 3 paramètres pour enlever les warning
 mongoose.set('useFindAndModify', false);
 setUpPassport();
 
-// view engine setup
+// view engine setup *************************************************************************************************
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -48,6 +49,7 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Indique où sont situées les routes *************************************************************************************************
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
 

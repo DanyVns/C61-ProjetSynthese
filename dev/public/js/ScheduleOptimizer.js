@@ -2,13 +2,14 @@ var t2, t1;
 
 
 class ScheduleOptimizer {
-    constructor(data) {
+    constructor(data, showSolution) {
         this.dispo = data.dispo;
         this.event = data.event;
         this.users = [];
         this.userDict = {};
         this.timeslots = [];
         this.AlgoGen = null;
+        this.showSolution = showSolution
         this.progressobserver = new Observer()
     }
 
@@ -41,7 +42,7 @@ class ScheduleOptimizer {
 
         // Donner un nombre pour chaque utilisateur
         this.dispo.forEach(element => {
-            this.userDict[Object.keys(this.userDict).length] = element.user.firstname;
+            this.userDict[Object.keys(this.userDict).length] = element.user.firstname + " " + element.user.lastname ;
             this.users[Object.keys(this.users).length] = element._id
         });
         var userNb = Object.keys(this.users).length
@@ -85,8 +86,7 @@ class ScheduleOptimizer {
 
         const genMax = 1000;        
 
-        var liste = $('#listesolution')
-        liste.empty();
+        
 
 
         const solve = (genCurrent = 0, iteration = 0) => {
@@ -100,36 +100,47 @@ class ScheduleOptimizer {
             else {
                 t2 = new Date()
                 var dif = (t2 - t1) / 1000
-
-                var solution = this.AlgoGen.getCurrentGen()[0]
-
-                console.log(this.AlgoGen.getCurrentGen());
-
-
                 console.log("Temps en secondes : " + dif);
+                console.log("La solution obtenue est : ");
+                let solution = this.AlgoGen.getCurrentGen()[0]
+                console.log(solution);
+                let errors = null
+                if (solution.fitness < 0 )
+                    errors = this.checkErrors(solution.solution)                   
+                       
+                
+                showSolution(solution, this.timeslots,this.userDict, errors)
 
-
-                var timeslots = this.timeslots
-
-                var users = this.userDict
-                $.each(timeslots, function (i) {
-                    var li = $('<li/>')
-                        .addClass('list-group-item ')
-                        .appendTo(liste);
-                    var aaa = $('<span/>')
-                        .addClass('ui-all')
-                        .text(solutionFormat(timeslots[i]) + " -- " + (typeof users[solution.solution[i]] !== "undefined" ? users[solution.solution[i]] : '**LIBRE**'))
-                        .appendTo(li);
-                });
             }
         }
-
-
         solve();
 
 
 
     }   
+
+    checkErrors(solution) {
+        let dispoUsers = this.dispo
+        let users = this.users
+        let timeslots = this.timeslots
+
+        let errors = []
+        
+
+        for (let index = 0; index < solution.length; index++) {
+            if (solution[index] <= -1) {                
+                continue
+            }
+            else if (dispoUsers[solution[index]].dispos.indexOf(timeslots[index]) == -1) {                
+                errors.push(this.userDict[solution[index]]) // nom de l'usager éronné
+            }
+            
+        }
+
+        
+        
+        return errors
+    };
 
 
 
@@ -174,14 +185,9 @@ class ScheduleOptimizer {
                 lastuser = false
             }
 
-
-
         }
 
-
         return score
-
-
     }
 
     solutionGenerator(nbGene, etendueGene) {
@@ -206,19 +212,7 @@ function remplirTableau(valeur, longueur) {
     return tableau;
 }
 
-function solutionFormat(solution)   {
-    let insert = "-"
-    let positions = [8,6,4]
-    let solutionFormat = solution
-    positions.forEach(position => {
-        solutionFormat = [solutionFormat.slice(0, position), insert, solutionFormat.slice(position)].join('');        
-    });
 
-    solutionFormat = [solutionFormat.slice(0, -2), "h", solutionFormat.slice(-2)].join('');
-    
-
-    return solutionFormat
-}
 
 function melangerTableau(tableau) {
     for (var i = tableau.length - 1; i > 0; i--) {

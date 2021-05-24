@@ -30,6 +30,6 @@ exports.create = function(req, res, next) {
         results.event.owner.password = "N/A"
        
         req.session.currentEvent = results.event        
-        res.render('create_schedule', { title: "Test", event : req.session.currentEvent });
+        res.render('create_schedule', { title: "Audience - générer horaire", event : req.session.currentEvent });
     }
     )};
