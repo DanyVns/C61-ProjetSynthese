@@ -2,6 +2,7 @@
 
 # Audience - C61-ProjetSynthese
 &nbsp;
+Le 24 mai 2021 
 
 ## Sommaire
 Mon projet a pour titre « Audience », il s’agit d’une application web simplifiant la gestion d’entrevues ou d’auditions en cinq étapes rapides : 
@@ -12,6 +13,8 @@ Mon projet a pour titre « Audience », il s’agit d’une application web simp
 4. Les participants ajoutent leurs disponibilités (après s'être créé un compte)
 5. Un algorithme générera l’horaire optimal.  
 
+L'horaire généré placera chaque participant dans une case horaire unique selon les disponibilités fournies. 
+
 
 &nbsp;
 &nbsp; 
@@ -20,7 +23,7 @@ Mon projet a pour titre « Audience », il s’agit d’une application web simp
 ## Installation
 
 1. Installer Node.Js :
-    - https://nodejs.org/en/
+    - [Site web officiel](https://nodejs.org/en/)
     - La version utilisée pour ce travail a été la version 14.15.4
 
 2. Installer les modules requis pour le projet :
@@ -45,15 +48,46 @@ Mon projet a pour titre « Audience », il s’agit d’une application web simp
 &nbsp;
 &nbsp; 
 
-## Utilisation
-Cette section indique comment démarrer votre projet et quels sont les usages fondamentaux
-(ici, sans être nécessaires, des captures d’écrans sont généralement appréciées). Ce ne sont pas
-les instructions destinées aux programmeurs mais plutôt aux utilisateurs.
-## Références
-Deux outils de références m'ont été utile pour apprendre Node.js en début de session.
+# Utilisation
 
-1. Le tutoriel en ligne de Node.js et Express disponible sur MDN Web Docs : 
-    > https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs
+### 1. Une fois le serveur lancé, cliquez sur le bouton bleu "S'enregistrer" pour créer un compte.
+![Image](./img/01.JPG)
+
+### 2. Entrez vos informations.
+![Image](./img/02.JPG)
+
+### 3. Vous serez amené sur la page d'accueil. Vous aurez alors la possibilité de créer ou de joindre un évènement.
+![Image](./img/03.JPG)
+
+
+### 5. Joindre un évènement : coller l'identifiant de l'évènement dans la case correspondante. Il sera alors possible d'ajouter et sauvegarder ces disponibilités. 
+![Image](./img/04.JPG)
+ 
+### 5. Créer un évènement : depuis l'écran d'accueil cliquez sur "créer un évènement". Dans la nouvelle page, fournir les renseignements demandés:
+- Titre, Description
+- Date de  fin et de début
+- Heure de fin et de début des plages horaires d'une heure
+- Date limite qu'auront les participants pour se joindre à l'évènement
+![Image](./img/05.JPG)
+
+### 6. Générer un horaire : depuis l'écran d'accueil cliquez sur le bouton "générer" de l'évènement voulu. Et une fois de plus sur le bouton "Générer horaire"
+- Note : Il est seulement possible de générer un horaire après la date limite. 
+- Si l'horaire n'a pu associer une case horaire pour tous les participants, un message d'erreur s'affichera avec le nom des participants problématiques. 
+![Image](./img/06.JPG)
+
+### 6. Exporter l'horaire, une fois l'horaire généré cliquez sur l'option "exporter l'horaire" pour télécharger l'horaire en format compatible avec Excel.
+![Image](./img/07.JPG)
+
+
+&nbsp;
+&nbsp; 
+
+
+
+## Références
+Deux outils de références m'ont été utiles pour apprendre Node.js en début de session.
+
+1. [Le tutoriel en ligne de Node.js et Express disponible sur MDN Web Docs](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs)
 
 
 2. Médiagraphie d'introduction à Express et Node.Js  
@@ -61,12 +95,14 @@ Deux outils de références m'ont été utile pour apprendre Node.js en début d
     >   M. HAHN Evan (2016) "Express in Action : Writing, building, and testing Node.js applications", Manning Publications, 258p.
 
 
+&nbsp;
+&nbsp; 
 
 
-## Contact (section optionnelle)
 
-![alt text](https://github.com/DanyVns/C61-ProjetSynthese/blob/main/img/image.jpg?raw=true)
+## Contact 
 
-## Remerciements (section optionnelle – par exemple, un enseignant autre que celui du cours qui
-vous a aidé)
-## Licence (section optionnelle)
+Dany Viens   
+- Courriel : dany.viens@gmail.com
+
+- GitHub : [DanyVns](https://github.com/DanyVns)
