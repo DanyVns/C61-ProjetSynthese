@@ -4,7 +4,7 @@ window.addEventListener("load", () => {
 
   $("#joineventform").submit(function (event) {
     event.preventDefault();
-    console.log($('input[type="text"]').val())
+
     window.location.replace("/join_event/" + $('input[type="text"]').val())
   });
 
@@ -31,9 +31,7 @@ window.addEventListener("load", () => {
 
 
 
-function copyToClipboard(event) {
-  console.log(event.text);
-}
+
 
 async function ajaxPost(eventID) {
 
@@ -51,7 +49,6 @@ async function ajaxPost(eventID) {
   })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
       startAlgo(data)
 
 
@@ -86,7 +83,7 @@ function showSolution(solution, timeslots, users, errors) {
   var table = $('#solutionBody')
   table.empty();
   if (errors) {    
-    console.log(errors);
+
     $("#solutionErrorTitle").html("Attention! L'horaire généré n'a pas fournir une case horaire pour le ou les utilisateur(s) suivants : ")
     $("#solutionErrorTitle").css("color", "red")
     

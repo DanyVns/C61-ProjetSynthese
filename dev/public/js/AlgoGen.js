@@ -191,8 +191,7 @@ class OnePointCrossoverStrategy extends CrossoverStrategy {
             fitness: 0
         }
 
-       //console.log(solution1);
-        //console.log(solution2);
+
         var i = Math.floor(solution1.length * Math.random());
         var j = Math.floor(solution2.length * Math.random());
         var premier = Math.min(i, j);
@@ -213,12 +212,13 @@ class OnePointCrossoverStrategy extends CrossoverStrategy {
             while (enfant.solution.includes(solution2[index])) {
                  index++;                 
              }
+            
       
             enfant.solution[i] = solution2[index];
             index++;
 
         }
-        //console.log(enfant.solution);
+
         return enfant;
     }
 

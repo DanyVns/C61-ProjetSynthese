@@ -37,7 +37,7 @@ class ScheduleOptimizer {
             dateCourante.setDate(dateCourante.getDate() + 1)
         }
 
-        //console.log(this.timeslots);
+ 
 
 
         // Donner un nombre pour chaque utilisateur
@@ -46,11 +46,11 @@ class ScheduleOptimizer {
             this.users[Object.keys(this.users).length] = element._id
         });
         var userNb = Object.keys(this.users).length
-        //console.log("nombre users" + userNb);
+
 
 
         var fitnessParam = [this.dispo, this.users, this.timeslots];
-        //console.log(this.timeslots.length + "nombre de slots");
+    
         var nbGene = this.timeslots.length;
         var etendueGene = [0, userNb];
         var nbElite = 10;
@@ -93,6 +93,7 @@ class ScheduleOptimizer {
             while(genCurrent < Math.floor(genMax/33 * iteration)){
                 this.AlgoGen.nextGen()
                 genCurrent++;
+                
             }
             iteration++
             this.progressobserver.notify(Math.floor(genCurrent / genMax * 100) + "%")
@@ -148,11 +149,7 @@ class ScheduleOptimizer {
         var dispo = fitnessParam[0]
         var users = fitnessParam[1]
         var timeslots = fitnessParam[2]
-
-
-        // TODO modifier fitness pour réduire le score si tout les usagers ne sont pas représenté
-
-        //console.log(dispo[solution[0]].dispos.indexOf(timeslots[0]));
+     
         var score = 0
 
         let lastuser = false
